@@ -1,0 +1,10 @@
+﻿{
+    "creatures": [
+        {
+            "DataId": 201000,
+            "DescriptionTextID": "기본슬라임",
+            "PrefabLabel": "Player"
+        }
+     
+    ]
+}
