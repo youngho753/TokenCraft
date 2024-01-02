@@ -11,12 +11,10 @@ public class TokenController : BaseController
     public Rigidbody2D RigidBody { get; set; }
     public CircleCollider2D CircleCollider2D { get; set; }
     protected Animator Anim;
-    public int groupNum = 0;
-    public int pkGroupNum = 0;
-    public int tokenType = 0;
-    public int controllerType = 0;
+    public int groupNum;
+    public int pkGroupNum;
 
-    public TokenBackgroundController TokenBackground = null;
+    public TokenBackgroundController InTokenBackground;
 
     void Awake()
     {

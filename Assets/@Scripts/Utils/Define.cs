@@ -37,6 +37,16 @@ public class Define
 
     public static readonly int UI_GAMESCENE_SORT_ORDER = 301;
     #region Enum
+    
+    public enum ObjectType
+    {
+        Ui,
+        EnemyToken,
+        ProductToken,
+        MaterialToken,
+        Null,
+    }
+    
     public enum MaterialType
     {
         Gold,
@@ -139,15 +149,6 @@ public class Define
         Dead
     }
 
-    public enum ObjectType
-    {
-        Player,
-        Monster,
-        RegularMonster,
-        Boss,
-        Projectile,
-        Env
-    }
 
     public enum PlayerState
     {

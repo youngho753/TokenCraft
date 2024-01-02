@@ -51,7 +51,7 @@ public class MouseController : MonoBehaviour
             if (mouseDownToken == null) return;
             
 
-            /** 2. 클릭한 토큰의 아래 토큰 Get */
+            /** 2. 클릭한 토큰의 아래 토큰 Get */ 
             Stack<TokenController> underTokenStack = Util.GetUnderTokenStack(mouseDownToken); 
 
             
@@ -96,19 +96,28 @@ public class MouseController : MonoBehaviour
         {
             if (_mouseTokenStack == null) return;
             
-            /** case 1. 건물위에 놨을때 */
+            // 마우스를 놨을때 
+            // 1.UI  2.적  3.건물 4.일반토큰 순으로 체크를 해서 분기를 태움.  
+            
+            /** 1. 마우스아래 GameObject 타입 구하기 */
+            ObjectType objectType = GetMouseUpObjectType();
+            
+            
+            /** case 3. 건물위에 놨을때 */
             /** 1. 마우스 놨을때 건물 Get */
             TokenBackgroundController mouseUpTokenBackground = GetMouseUpTokenBackground();
 
             // 건물클릭
             if (mouseUpTokenBackground != null)
             {
-                Util.MoveTokenStack(_mouseTokenStack, mouseUpTokenBackground.transform.position + new Vector3((1.2f * mouseUpTokenBackground.TokenStacks.Count) -0.6f,-0.3f,0f));
+                // Util.MoveTokenStack(_mouseTokenStack, mouseUpTokenBackground.transform.position + new Vector3((1.2f * mouseUpTokenBackground.TokenStacks.Count) -0.6f,-0.3f,0f));
+                /** 1. */
                 
-                mouseUpTokenBackground.AddTokenStack(_mouseTokenStack);
+                
+                // mouseUpTokenBackground.AddTokenStack(_mouseTokenStack);
                 foreach (TokenController tc in _mouseTokenStack)
                 {
-                    tc.TokenBackground = mouseUpTokenBackground;
+                    // tc.TokenBackground = mouseUpTokenBackground;
                 }
                 
                 Debug.Log("건물 클릭!!");
@@ -116,9 +125,6 @@ public class MouseController : MonoBehaviour
             else
             {
                 /** case 2. 토큰위에 놨을때 */
-
-
-
                 /** 1. 마우스 놨을때 토큰 스택 Get */
                 Stack<TokenController> mouseUpTokenStack = GetMouseUpTokenStack();
 
@@ -164,15 +170,15 @@ public class MouseController : MonoBehaviour
         
         //가장 아래 토큰이면 건물의 토큰스택에서 빼줘야함
         TokenController token = Util.GetLowestToken(tokenStack);
-        if (token.groupNum == token.pkGroupNum && token.TokenBackground != null)
+        if (token.groupNum == token.pkGroupNum && token.InTokenBackground != null)
         {
-            token.TokenBackground.TokenStacks.Remove(tokenStack);
+            // token.TokenBackground.TokenStacks.Remove(tokenStack);
         }
         
         //토큰에서 건물을 빼기
         foreach (TokenController tc in tokenStack)
         {
-            tc.TokenBackground = null;
+            tc.InTokenBackground = null;
         }
     }
 
@@ -186,6 +192,38 @@ public class MouseController : MonoBehaviour
     
     #region MouseUp
 
+    private ObjectType GetMouseUpObjectType()
+    {
+        RaycastHit2D[] targets = Physics2D.CircleCastAll(_mousePosition, 0.5f, Vector2.zero, 0);
+
+        // for (int i = 0; i < targets.Length; i++)
+        // {
+        //     if (targets[i].transform.gameObject.GetComponent<BlankTokenController>())
+        //         return ObjectType.ProductToken;
+        // }
+        //
+        //for (int i = 0; i < targets.Length; i++)
+        // {
+        //     if (targets[i].transform.gameObject.GetComponent<BlankTokenController>())
+        //         return ObjectType.ProductToken;
+        // }
+        //
+        for (int i = 0; i < targets.Length; i++)
+        {
+            if (targets[i].transform.gameObject.GetComponent<BlankTokenController>())
+                return ObjectType.ProductToken;
+        }
+        
+        for (int i = 0; i < targets.Length; i++)
+        {
+            if (targets[i].transform.gameObject.GetComponent<MaterialTokenController>())
+                return ObjectType.MaterialToken;
+        }
+
+        
+        return ObjectType.Null;
+    }
+    
     private TokenBackgroundController GetMouseUpTokenBackground()
     {
         RaycastHit2D[] targets = Physics2D.CircleCastAll(_mousePosition, 0.5f, Vector2.zero, 0);

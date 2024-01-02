@@ -4,8 +4,14 @@ using DG.Tweening;
 using UnityEngine;
 
 public class ProductTokenController : TokenController
-{
-    // Start is called before the first frame update
+{ 
+    public TokenBackgroundController TokenBackground;
    
-
+    public override void MoveToTarget(Vector3 position, float time, bool snapping)
+    {
+        transform.position = position;
+        
+        TokenBackground.MoveToTarget(transform.position + new Vector3(0,0.8f,0));
+        
+    }
 }

@@ -6,6 +6,10 @@ using DG.Tweening;
 
 public class MaterialTokenController : TokenController
 {
+    void Awake()
+    {
+        Init();
+    }
     public override bool Init()
     {
         base.Init();

@@ -12,11 +12,13 @@ public class TokenBackgroundController : BaseController
     public BoxCollider2D BoxCollider2D { get; set; }
     protected Animator Anim;
 
-    public bool isEnabled = false;
-    public int controllerType = 2;
-    
+    public List<BlankTokenController> BlankTokenList;
+     
+
     public Dictionary<int, Stack<TokenController>> TokenStackDic = new Dictionary<int, Stack<TokenController>>();
 
+    public int maxTokenCnt;
+    
     void Awake()
     {
         Init();
@@ -30,52 +32,33 @@ public class TokenBackgroundController : BaseController
         Anim = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
         BoxCollider2D = GetComponent<BoxCollider2D>();
-        isEnabled = false;
+        maxTokenCnt = 2;
+        BlankTokenList = new List<BlankTokenController>();
+
+        
+        
         return true;
     }
 
 
-    public virtual void MoveToTarget(Vector3 position, float time, bool snapping)
+    public void MoveToTarget(Vector3 position)
     {
-        transform.DOMove(position, time, snapping);
-    }
-    
-    public virtual void SettingToken(int groupNum, int idx, bool isMoveTokenStack = false)
-    {
-        //마우스로 움직이고 있는 토큰일 경우
-        if (isMoveTokenStack)
-        {
-            BoxCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum + idx;
-        }
-        //바닥에 놓여있는 토큰인 경우
-        else
-        {
-            //이 토큰이 최하단인 경우
-            if(idx == 0)
-            {
-                BoxCollider2D.isTrigger = false;   
-            }
-            //이 토큰이 최하단이 아닌경우
-            else
-            {
-                BoxCollider2D.isTrigger = true;
-            }
-            
-            SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + idx;
-            
-            
-        }
-    }
+        transform.position = position;
 
-    public virtual void AddTokenStack(Stack<TokenController> tokenStack)
-    {
-        TokenStacks.Add(tokenStack);
+        for (int i = 0; i < BlankTokenList.Count; i++)
+        {
+            BlankTokenList[i].transform.position = position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0);
+        }
     }
     
-    public virtual void RemoveTokenStack(Stack<TokenController> tokenStack)
+    public virtual void AddTokenStack(Stack<TokenController> tokenStack, int key)
     {
-        TokenStacks.Remove(tokenStack);
+        TokenStackDic.Add(key, tokenStack);
+    }
+    
+    public virtual void RemoveTokenStack(int key)
+    {
+        TokenStackDic.Remove(key);
     }
     
     

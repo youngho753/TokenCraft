@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using Unity.VisualScripting.Antlr3.Runtime;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ObjectManager
@@ -77,10 +78,11 @@ public class ObjectManager
         
         Stack<TokenController> tokenStack = new Stack<TokenController>();
 
-       if (type == typeof(TokenController))
+       if (type == typeof(MaterialTokenController))
        {
             GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
-            TokenController cc = go.GetOrAddComponent<TokenController>();
+            TokenController cc = go.GetOrAddComponent<MaterialTokenController>();
+            Debug.Log(cc.GetType());
             go.transform.position = position;
             Managers.Game._tokenIndex.Add(cc);
 
@@ -105,7 +107,12 @@ public class ObjectManager
            cc.pkGroupNum = pkGroupNum;
            cc.groupNum = pkGroupNum;
            tokenStack.Push(cc);
-            
+           
+           for (int i = 0; i <  cc.TokenBackground.maxTokenCnt; i++)
+           {
+               BlankTokenController btc = Managers.Object.Spawn<BlankTokenController>(cc.TokenBackground.transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankToken");
+               cc.TokenBackground.BlankTokenList.Add(btc);
+           }
             
            Managers.Game._tokenStackDic.Add(cc.pkGroupNum,tokenStack);
            Tokens.Add(cc);
@@ -120,6 +127,14 @@ public class ObjectManager
     {
         System.Type type = typeof(T);
 
+        if (type == typeof(BlankTokenController))
+        {
+            GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+            BlankTokenController btc = go.GetOrAddComponent<BlankTokenController>();
+            go.transform.position = position;
+            
+            return btc as T;
+        }
        
         return null;
     }

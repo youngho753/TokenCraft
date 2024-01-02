@@ -6,8 +6,6 @@ public class NatureTokenController : ProductTokenController
 {
    public bool isMouseHolding = false;
 
-   [SerializeField]
-   private GameObject _background;
 
    
 
@@ -39,7 +37,7 @@ public class NatureTokenController : ProductTokenController
          }
             
          SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + idx;
-         _background.SetActive(true);
+         // _background.SetActive(true);
             
             
       }
