@@ -81,7 +81,7 @@ public class ObjectManager
        if (type == typeof(MaterialTokenController))
        {
             GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
-            TokenController cc = go.GetOrAddComponent<MaterialTokenController>();
+            MaterialTokenController cc = go.GetOrAddComponent<MaterialTokenController>();
             Debug.Log(cc.GetType());
             go.transform.position = position;
             Managers.Game._tokenIndex.Add(cc);
@@ -107,17 +107,31 @@ public class ObjectManager
            cc.pkGroupNum = pkGroupNum;
            cc.groupNum = pkGroupNum;
            tokenStack.Push(cc);
+           Managers.Game._tokenStackDic.Add(cc.pkGroupNum,tokenStack);
+           Tokens.Add(cc);
            
            for (int i = 0; i <  cc.TokenBackground.maxTokenCnt; i++)
            {
-               BlankTokenController btc = Managers.Object.Spawn<BlankTokenController>(cc.TokenBackground.transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankToken");
+               TokenController btc = Managers.Object.SpawnToken<BlankTokenController>(cc.TokenBackground.transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankToken");
                cc.TokenBackground.BlankTokenList.Add(btc);
            }
-            
-           Managers.Game._tokenStackDic.Add(cc.pkGroupNum,tokenStack);
-           Tokens.Add(cc);
-
            return cc as T;
+       } else if (type == typeof(BlankTokenController))
+       {
+           
+           GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+           BlankTokenController btc = go.GetOrAddComponent<BlankTokenController>();
+           go.transform.position = position;
+           Managers.Game._tokenIndex.Add(btc);
+
+           int pkGroupNum = Managers.Game._tokenIndex.Count; 
+           btc.pkGroupNum = pkGroupNum;
+           btc.groupNum = pkGroupNum;
+           tokenStack.Push(btc);
+           Managers.Game._tokenStackDic.Add(btc.pkGroupNum,tokenStack);
+           Tokens.Add(btc);
+           
+           return btc as T;
        }
        
         return null;
@@ -127,15 +141,6 @@ public class ObjectManager
     {
         System.Type type = typeof(T);
 
-        if (type == typeof(BlankTokenController))
-        {
-            GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
-            BlankTokenController btc = go.GetOrAddComponent<BlankTokenController>();
-            go.transform.position = position;
-            
-            return btc as T;
-        }
-       
         return null;
     }
 

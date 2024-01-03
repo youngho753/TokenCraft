@@ -4,14 +4,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class BlankTokenController : BaseController
+public class BlankTokenController : TokenController
 {
-    [SerializeField]
-    public SpriteRenderer SpriteRenderer;
-    public Rigidbody2D RigidBody { get; set; }
-    public CircleCollider2D CircleCollider2D { get; set; }
-    protected Animator Anim;
-
     void Awake()
     {
         Init();

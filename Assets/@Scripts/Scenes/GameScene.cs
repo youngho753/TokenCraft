@@ -61,7 +61,7 @@ public class GameScene : BaseScene
 
             TokenController tc;
             for(int i=1; i<10; i++){
-                tc = Managers.Object.SpawnToken<TokenController>(Managers.Game.Mouse._mousePosition, 0, "Token");
+                tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "Token");
                 Util.SettingTokenStack(null, false, tc);
                 
                 tokenStack.Push(tc);

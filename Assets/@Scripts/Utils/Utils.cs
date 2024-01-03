@@ -366,5 +366,33 @@ public static class Util
         Managers.Game._tokenStackDic.Add(lowestToken.pkGroupNum,tokenStack);
     }
 
+    public static TokenController GetTokenController(GameObject gameObject, bool isBlankInclude = false)
+    {
+        
+        if(isBlankInclude){
+            if (gameObject.GetComponent<BlankTokenController>())
+            {
+                return gameObject.GetComponent<BlankTokenController>();
+            }
+        }
+        
+        // if (gameObject.GetComponent<NatureTokenController>())
+        // {
+        //     return gameObject.GetComponent<NatureTokenController>();
+        // }
+        //
+        if (gameObject.GetComponent<FactoryTokenController>())
+        {
+            return gameObject.GetComponent<FactoryTokenController>();
+        }
+        
+        if (gameObject.GetComponent<MaterialTokenController>())
+        {
+            return gameObject.GetComponent<MaterialTokenController>();
+        }
+        
+        return null;
+    }
+
 
 }

@@ -12,7 +12,7 @@ public class TokenBackgroundController : BaseController
     public BoxCollider2D BoxCollider2D { get; set; }
     protected Animator Anim;
 
-    public List<BlankTokenController> BlankTokenList;
+    public List<TokenController> BlankTokenList;
      
 
     public Dictionary<int, Stack<TokenController>> TokenStackDic = new Dictionary<int, Stack<TokenController>>();
@@ -33,7 +33,7 @@ public class TokenBackgroundController : BaseController
         SpriteRenderer = GetComponent<SpriteRenderer>();
         BoxCollider2D = GetComponent<BoxCollider2D>();
         maxTokenCnt = 2;
-        BlankTokenList = new List<BlankTokenController>();
+        BlankTokenList = new List<TokenController>();
 
         
         
