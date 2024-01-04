@@ -12,10 +12,8 @@ public class TokenBackgroundController : BaseController
     public BoxCollider2D BoxCollider2D { get; set; }
     protected Animator Anim;
 
-    public List<TokenController> BlankTokenList;
-     
-
-    public Dictionary<int, Stack<TokenController>> TokenStackDic = new Dictionary<int, Stack<TokenController>>();
+    public Dictionary<int, TokenController> BlankTokenDic = new Dictionary<int, TokenController>();
+    public Dictionary<int, Stack<TokenController>> BlackOnTokenStackDic = new Dictionary<int, Stack<TokenController>>();
 
     public int maxTokenCnt;
     
@@ -33,7 +31,6 @@ public class TokenBackgroundController : BaseController
         SpriteRenderer = GetComponent<SpriteRenderer>();
         BoxCollider2D = GetComponent<BoxCollider2D>();
         maxTokenCnt = 2;
-        BlankTokenList = new List<TokenController>();
 
         
         
@@ -45,20 +42,20 @@ public class TokenBackgroundController : BaseController
     {
         transform.position = position;
 
-        for (int i = 0; i < BlankTokenList.Count; i++)
+        for (int i = 0; i < BlankTokenDic.Count; i++)
         {
-            BlankTokenList[i].transform.position = position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0);
+            BlankTokenDic[i].transform.position = position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0);
         }
     }
     
     public virtual void AddTokenStack(Stack<TokenController> tokenStack, int key)
     {
-        TokenStackDic.Add(key, tokenStack);
+        BlackOnTokenStackDic.Add(key, tokenStack);
     }
     
     public virtual void RemoveTokenStack(int key)
     {
-        TokenStackDic.Remove(key);
+        BlackOnTokenStackDic.Remove(key);
     }
     
     

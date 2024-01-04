@@ -82,7 +82,6 @@ public class ObjectManager
        {
             GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
             MaterialTokenController cc = go.GetOrAddComponent<MaterialTokenController>();
-            Debug.Log(cc.GetType());
             go.transform.position = position;
             Managers.Game._tokenIndex.Add(cc);
 
@@ -112,8 +111,9 @@ public class ObjectManager
            
            for (int i = 0; i <  cc.TokenBackground.maxTokenCnt; i++)
            {
-               TokenController btc = Managers.Object.SpawnToken<BlankTokenController>(cc.TokenBackground.transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankToken");
-               cc.TokenBackground.BlankTokenList.Add(btc);
+               BlankTokenController btc = Managers.Object.SpawnToken<BlankTokenController>(cc.TokenBackground.transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankToken");
+               btc._backgroundOrder = i;
+               cc.TokenBackground.BlankTokenDic.Add(i,btc);
            }
            return cc as T;
        } else if (type == typeof(BlankTokenController))

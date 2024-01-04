@@ -50,18 +50,18 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "Token");
+            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
             
         }else if (Input.GetKeyDown(KeyCode.F3))
         {
             Stack<TokenController> tokenStack = new Stack<TokenController>();
 
-            TokenController lowestToken = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "Token");
+            TokenController lowestToken = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
             tokenStack.Push(lowestToken);
 
             TokenController tc;
             for(int i=1; i<10; i++){
-                tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "Token");
+                tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
                 Util.SettingTokenStack(null, false, tc);
                 
                 tokenStack.Push(tc);

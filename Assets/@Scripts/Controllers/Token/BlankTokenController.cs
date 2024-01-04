@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class BlankTokenController : TokenController
 {
+    public int _backgroundOrder;
+    public int _spriteType;
+
+    public Stack<TokenController> onTokenStack;
+    
     void Awake()
     {
         Init();
@@ -20,5 +25,10 @@ public class BlankTokenController : TokenController
         SpriteRenderer = GetComponent<SpriteRenderer>();
         CircleCollider2D = GetComponent<CircleCollider2D>();
         return true;
+    }
+
+    public override void SettingToken(int groupNum, int idx, bool isMoveTokenStack = false)
+    {
+        
     }
 }

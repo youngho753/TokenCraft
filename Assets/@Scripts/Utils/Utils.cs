@@ -308,9 +308,14 @@ public static class Util
      */
     public static void MoveTokenStack(Stack<TokenController> tokenStack, Vector3 targetPosition)
     {
+        TokenController lowestToken = GetLowestToken(tokenStack);
+        
         int idx = tokenStack.Count - 1;
+        if (lowestToken.gameObject.GetComponent<BlankTokenController>() != null) idx -= 1;        
         foreach (TokenController tc in tokenStack)
         {
+            if (idx < 0) return;
+            
             tc.MoveToTarget( targetPosition + new Vector3(0f, idx * 0.2f, 0f), idx * 0.05f, false);
             idx--;
         }        
@@ -376,11 +381,11 @@ public static class Util
             }
         }
         
-        // if (gameObject.GetComponent<NatureTokenController>())
-        // {
-        //     return gameObject.GetComponent<NatureTokenController>();
-        // }
-        //
+        if (gameObject.GetComponent<NatureTokenController>())
+        {
+            return gameObject.GetComponent<NatureTokenController>();
+        }
+        
         if (gameObject.GetComponent<FactoryTokenController>())
         {
             return gameObject.GetComponent<FactoryTokenController>();

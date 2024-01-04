@@ -100,6 +100,10 @@ public class MouseController : MonoBehaviour
             
             /** 1. 마우스 놨을때 토큰 스택 Get */
             Stack<TokenController> mouseUpTokenStack = GetMouseUpTokenStack();
+            
+            
+            /** 1. 마우스 놨을때 데이터 세팅 */
+            SetMouseUpDataSetting(mouseUpTokenStack,_mouseTokenStack);
 
 
             /** 2. 바닥에 있는 토큰스택과 마우스로 들고 있는 토큰스택 concat */
@@ -197,10 +201,13 @@ public class MouseController : MonoBehaviour
             if (Util.GetTokenController(targets[i].transform.gameObject,true) != null &&
                 Util.GetTokenController(targets[i].transform.gameObject,true).groupNum == _mouseTokenStack.Peek().groupNum) 
                 continue;
+            
+            if (Util.GetTokenController(targets[i].transform.gameObject, true) == null) continue;
 
             //단일 토큰을 위해 사용
             tc = Util.GetTokenController(targets[i].transform.gameObject,true);
 
+             
             getStack = Managers.Game._tokenStackDic.GetValueOrDefault(Util.GetTokenController(targets[i].transform.gameObject,true).groupNum, null);
 
             copyStack = Util.DeepCopy(getStack);
@@ -221,6 +228,28 @@ public class MouseController : MonoBehaviour
         
         // 다중 토큰위에 내려놨을 경우
         return copyStack;
+    }
+
+    private void SetMouseUpDataSetting(Stack<TokenController> mouseUpTokenStack, Stack<TokenController> mouseTokenStack)
+    {
+        if (mouseUpTokenStack == null || mouseTokenStack == null) return; 
+        
+        SetBlankTokenSetting(mouseUpTokenStack, mouseTokenStack);
+    }
+
+    private void SetBlankTokenSetting(Stack<TokenController> mouseUpTokenStack, Stack<TokenController> mouseTokenStack)
+    {
+        TokenController mouseUpToken = mouseUpTokenStack.Peek();
+        
+        // BlankToken Setting
+        BlankTokenController blankToken;  
+
+        if (mouseUpToken.GetComponent<BlankTokenController>() != null)
+        {
+            blankToken = mouseUpToken.GetComponent<BlankTokenController>();
+            blankToken.onTokenStack = mouseTokenStack;
+        }
+        
     }
     
    
