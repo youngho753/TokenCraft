@@ -14,7 +14,7 @@ public class TokenController : BaseController
     public int groupNum;
     public int pkGroupNum;
 
-    public TokenBackgroundController InTokenBackground;
+    public BlankTokenController InBlankToken;
 
     void Awake()
     {

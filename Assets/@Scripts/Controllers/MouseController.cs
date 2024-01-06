@@ -60,8 +60,7 @@ public class MouseController : MonoBehaviour
             
             
             /** 4. 건물데이터 제거 */
-            SetMouseUpBackgound(underTokenStack);
-            SetMouseUpBackgound(onTokenStack);
+            SetMouseDownBackgound(onTokenStack);
             
             
             /** 5. 토큰스택 tokenDic 정리 */
@@ -131,30 +130,30 @@ public class MouseController : MonoBehaviour
         
         for (int i = 0; i < targets.Length; i++)
         {
-            if (Util.GetTokenController(targets[i].transform.gameObject))
+            if (Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptBlankTokenContoller))
             {
-                return Util.GetTokenController(targets[i].transform.gameObject);
+                return Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptBlankTokenContoller);
             }
         }
         
         return null;
     }
 
-    private void SetMouseUpBackgound(Stack<TokenController> tokenStack)
+    private void SetMouseDownBackgound(Stack<TokenController> tokenStack)
     {
         if (tokenStack == null) return;
         
         //가장 아래 토큰이면 건물의 토큰스택에서 빼줘야함
-        TokenController token = Util.GetLowestToken(tokenStack);
-        if (token.groupNum == token.pkGroupNum && token.InTokenBackground != null)
+        TokenController lowestToken = Util.GetLowestToken(tokenStack);
+        if (lowestToken.InBlankToken != null)
         {
-            // token.TokenBackground.TokenStacks.Remove(tokenStack);
+            lowestToken.InBlankToken.productToken.SetTokenStack(lowestToken.InBlankToken._backgroundOrder, tokenStack);
         }
         
         //토큰에서 건물을 빼기
         foreach (TokenController tc in tokenStack)
         {
-            tc.InTokenBackground = null;
+            tc.InBlankToken = null;
         }
     }
 
@@ -198,17 +197,17 @@ public class MouseController : MonoBehaviour
         TokenController tc = null;
         for (int i = 0; i < targets.Length; i++)
         {
-            if (Util.GetTokenController(targets[i].transform.gameObject,true) != null &&
-                Util.GetTokenController(targets[i].transform.gameObject,true).groupNum == _mouseTokenStack.Peek().groupNum) 
+            if (Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller) != null &&
+                Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller).groupNum == _mouseTokenStack.Peek().groupNum) 
                 continue;
             
-            if (Util.GetTokenController(targets[i].transform.gameObject, true) == null) continue;
+            if (Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptBlankTokenContoller) == null) continue;
 
             //단일 토큰을 위해 사용
-            tc = Util.GetTokenController(targets[i].transform.gameObject,true);
+            tc = Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller);
 
              
-            getStack = Managers.Game._tokenStackDic.GetValueOrDefault(Util.GetTokenController(targets[i].transform.gameObject,true).groupNum, null);
+            getStack = Managers.Game._tokenStackDic.GetValueOrDefault(Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller).groupNum, null);
 
             copyStack = Util.DeepCopy(getStack);
 
@@ -246,8 +245,10 @@ public class MouseController : MonoBehaviour
 
         if (mouseUpToken.GetComponent<BlankTokenController>() != null)
         {
+            
             blankToken = mouseUpToken.GetComponent<BlankTokenController>();
-            blankToken.onTokenStack = mouseTokenStack;
+            blankToken.productToken.AddTokenStack(blankToken._backgroundOrder, mouseTokenStack);
+
         }
         
     }

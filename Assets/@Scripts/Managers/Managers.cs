@@ -11,8 +11,10 @@ public class Managers : MonoBehaviour
     #region Contents
     GameManager _game = new GameManager();
     ObjectManager _object = new ObjectManager();
+    StackManager _stack = new StackManager();
     public static GameManager Game { get { return Instance?._game; } }
     public static ObjectManager Object { get { return Instance?._object; } }
+    public static StackManager Stack { get { return Instance?._stack; } }
     #endregion
 
     #region Core

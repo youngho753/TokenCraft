@@ -113,6 +113,7 @@ public class ObjectManager
            {
                BlankTokenController btc = Managers.Object.SpawnToken<BlankTokenController>(cc.TokenBackground.transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankToken");
                btc._backgroundOrder = i;
+               btc.productToken = cc;
                cc.TokenBackground.BlankTokenDic.Add(i,btc);
            }
            return cc as T;

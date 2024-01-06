@@ -371,14 +371,18 @@ public static class Util
         Managers.Game._tokenStackDic.Add(lowestToken.pkGroupNum,tokenStack);
     }
 
-    public static TokenController GetTokenController(GameObject gameObject, bool isBlankInclude = false)
+    /**
+     * @desc ExceptValue
+     * 1 : BlankTokenContoller
+     * 2 : NatureTokencontroller
+     * 4 : FactoryTokenContoller
+     * 8 : MaterialTokenContoller
+     */
+    public static TokenController GetTokenController(GameObject gameObject, int exceptValue)
     {
-        
-        if(isBlankInclude){
-            if (gameObject.GetComponent<BlankTokenController>())
-            {
-                return gameObject.GetComponent<BlankTokenController>();
-            }
+        if (gameObject.GetComponent<BlankTokenController>())
+        {
+            return gameObject.GetComponent<BlankTokenController>();
         }
         
         if (gameObject.GetComponent<NatureTokenController>())

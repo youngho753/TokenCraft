@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -12,8 +13,8 @@ public class TokenBackgroundController : BaseController
     public BoxCollider2D BoxCollider2D { get; set; }
     protected Animator Anim;
 
-    public Dictionary<int, TokenController> BlankTokenDic = new Dictionary<int, TokenController>();
-    public Dictionary<int, Stack<TokenController>> BlackOnTokenStackDic = new Dictionary<int, Stack<TokenController>>();
+    public Dictionary<int, BlankTokenController> BlankTokenDic = new Dictionary<int, BlankTokenController>();
+    public Dictionary<int, Stack<TokenController>> BlankOnTokenStackDic = new Dictionary<int, Stack<TokenController>>();
 
     public int maxTokenCnt;
     
@@ -44,18 +45,23 @@ public class TokenBackgroundController : BaseController
 
         for (int i = 0; i < BlankTokenDic.Count; i++)
         {
-            BlankTokenDic[i].transform.position = position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0);
+            BlankTokenDic[i].MoveToTarget(position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0), 0f,false);
         }
     }
     
-    public virtual void AddTokenStack(Stack<TokenController> tokenStack, int key)
+    public virtual void AddTokenStack(int key, Stack<TokenController> tokenStack)
     {
-        BlackOnTokenStackDic.Add(key, tokenStack);
+        BlankOnTokenStackDic.Remove(key);
+        BlankOnTokenStackDic.Add(key, tokenStack);
+        Util.SettingTokenStack(tokenStack);
+        BlankTokenDic.GetValueOrDefault(key).onTokenStack = tokenStack;
+
     }
     
     public virtual void RemoveTokenStack(int key)
     {
-        BlackOnTokenStackDic.Remove(key);
+        BlankTokenDic.GetValueOrDefault(key).onTokenStack = null;
+        BlankOnTokenStackDic.Remove(key);
     }
     
     

@@ -235,6 +235,13 @@ static class Constants
     public const int StartMouseTokenLayerNum = 1050;
     public const int MaxStackTokenNum = 30;
     public const double Pi = 3.141592f;
+
+    public const int ExceptNothing = 0;
+    public const int ExceptBlankTokenContoller = 1;
+    public const int ExceptNatureTokencontroller = 2;
+    public const int ExceptFactoryTokenContoller = 4;
+    public const int ExceptMaterialTokenContoller = 8;
+
 }
 
 // public static class EquipmentUIColors

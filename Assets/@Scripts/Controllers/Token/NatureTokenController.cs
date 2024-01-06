@@ -6,9 +6,6 @@ public class NatureTokenController : ProductTokenController
 {
    public bool isMouseHolding = false;
 
-
-   
-
    public void SetBackgroundSprite()
    {
    }

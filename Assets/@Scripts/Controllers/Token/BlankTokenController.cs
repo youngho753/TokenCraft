@@ -9,6 +9,7 @@ public class BlankTokenController : TokenController
     public int _backgroundOrder;
     public int _spriteType;
 
+    public ProductTokenController productToken;
     public Stack<TokenController> onTokenStack;
     
     void Awake()
@@ -30,5 +31,12 @@ public class BlankTokenController : TokenController
     public override void SettingToken(int groupNum, int idx, bool isMoveTokenStack = false)
     {
         
+    }
+
+    public override void MoveToTarget(Vector3 position, float time, bool snapping)
+    {
+        transform.position = position;
+        
+        // Util.SettingTokenStack(onTokenStack);
     }
 }
