@@ -35,6 +35,9 @@ public class MouseController : MonoBehaviour
         OnMoveMouse();
         OnMouseDown();
         OnMouseUp();
+        
+        //Debug용
+        Debug.Log(Managers.Game._tokenStackDic.Count);
     }
 
     void FixedUpdate()
@@ -60,7 +63,7 @@ public class MouseController : MonoBehaviour
             
             
             /** 4. 건물데이터 제거 */
-            SetMouseDownBackgound(onTokenStack);
+            SetMouseDownDataSetting(underTokenStack, onTokenStack);
             
             
             /** 5. 토큰스택 tokenDic 정리 */
@@ -139,19 +142,31 @@ public class MouseController : MonoBehaviour
         return null;
     }
 
-    private void SetMouseDownBackgound(Stack<TokenController> tokenStack)
+    private void SetMouseDownDataSetting(Stack<TokenController> underTokenStack, Stack<TokenController> onTokenStack)
     {
-        if (tokenStack == null) return;
-        
-        //가장 아래 토큰이면 건물의 토큰스택에서 빼줘야함
-        TokenController lowestToken = Util.GetLowestToken(tokenStack);
-        if (lowestToken.InBlankToken != null)
+        // underTokenStack에서 Blank토큰을 제거한 토큰을 Get해서 Blank토큰에 Set
+        Stack<TokenController> copyStack = Util.DeepCopy(underTokenStack);
+        Stack<TokenController> exceptBlankUnderTokenStack = null;
+        if (copyStack != null)
         {
-            lowestToken.InBlankToken.productToken.SetTokenStack(lowestToken.InBlankToken._backgroundOrder, tokenStack);
+            copyStack = Util.ReverseStack(copyStack);
+            copyStack.Pop();
+            copyStack = Util.ReverseStack(copyStack);
+            exceptBlankUnderTokenStack = copyStack;
+        }
+
+        // OnTokenStack 세팅
+        if (onTokenStack != null)
+        {
+            TokenController lowestToken = Util.GetLowestToken(onTokenStack);
+            if (lowestToken.InBlankToken != null)
+            {
+                lowestToken.InBlankToken.productToken.SetTokenStack(lowestToken.InBlankToken._backgroundOrder, exceptBlankUnderTokenStack);
+            }    
         }
         
         //토큰에서 건물을 빼기
-        foreach (TokenController tc in tokenStack)
+        foreach (TokenController tc in onTokenStack)
         {
             tc.InBlankToken = null;
         }
@@ -231,25 +246,36 @@ public class MouseController : MonoBehaviour
 
     private void SetMouseUpDataSetting(Stack<TokenController> mouseUpTokenStack, Stack<TokenController> mouseTokenStack)
     {
-        if (mouseUpTokenStack == null || mouseTokenStack == null) return; 
+        if (mouseUpTokenStack == null) return; 
         
         SetBlankTokenSetting(mouseUpTokenStack, mouseTokenStack);
     }
 
     private void SetBlankTokenSetting(Stack<TokenController> mouseUpTokenStack, Stack<TokenController> mouseTokenStack)
     {
-        TokenController mouseUpToken = mouseUpTokenStack.Peek();
+        TokenController mouseUpToken = Util.ReverseStack(mouseUpTokenStack).Peek();
         
         // BlankToken Setting
-        BlankTokenController blankToken;  
+        BlankTokenController blankToken = null;
 
         if (mouseUpToken.GetComponent<BlankTokenController>() != null)
         {
-            
             blankToken = mouseUpToken.GetComponent<BlankTokenController>();
-            blankToken.productToken.AddTokenStack(blankToken._backgroundOrder, mouseTokenStack);
-
         }
+        else if (mouseUpToken.InBlankToken && mouseUpToken.InBlankToken.GetComponent<BlankTokenController>() != null)
+        {
+            blankToken = mouseUpToken.InBlankToken.GetComponent<BlankTokenController>();
+        }
+
+        if (blankToken == null) return;
+        
+        blankToken.productToken.AddTokenStack(blankToken._backgroundOrder, mouseTokenStack);
+
+        foreach (TokenController tc in mouseTokenStack)
+        {
+            tc.InBlankToken = blankToken;
+        }
+
         
     }
     

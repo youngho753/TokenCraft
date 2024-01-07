@@ -36,7 +36,12 @@ public class BlankTokenController : TokenController
     public override void MoveToTarget(Vector3 position, float time, bool snapping)
     {
         transform.position = position;
+
+        Stack<TokenController> tokenStack = new Stack<TokenController>();
+        tokenStack.Push(this);
+
+        Stack<TokenController> concatTokenStack = Util.ConcatTokenStack(tokenStack, onTokenStack);
         
-        // Util.SettingTokenStack(onTokenStack);
+        Util.SettingTokenStack(concatTokenStack);
     }
 }

@@ -184,7 +184,7 @@ public static class Util
     
     public static Stack<TokenController> ReverseStack(Stack<TokenController> tokenStack)
     {
-        if (tokenStack == null || tokenStack.Count == 0) return null;
+        if (tokenStack == null || tokenStack.Count == 0) return tokenStack;
 
         Stack<TokenController> newStack = new Stack<TokenController>();
 
@@ -335,9 +335,10 @@ public static class Util
         foreach (TokenController tc in tokenStack)
         {
             tc.SettingToken(lowestToken.pkGroupNum, idx, isMoveTokenStack);
-            MoveTokenStack(tokenStack, lowestToken.transform.position);
             idx--;
         }
+        
+        MoveTokenStack(tokenStack, lowestToken.transform.position);
         
         SettingTokenDictionary(tokenStack);
 

@@ -73,17 +73,7 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            Stack<TokenController> tokenStack = new Stack<TokenController>();
-
             TokenController _tc = Managers.Object.SpawnToken<NatureTokenController>(Managers.Game.Mouse._mousePosition, 0, "ProductToken");
-            tokenStack.Push(_tc);
-            
-            Managers.Game._tokenIndex.Add(_tc);
-            _tc.groupNum = Managers.Game._tokenIndex.Count;
-            _tc.pkGroupNum = Managers.Game._tokenIndex.Count;
-            Managers.Game._tokenStackDic.Add(_tc.pkGroupNum,tokenStack);
-            
-            Debug.Log(_tc.groupNum);
         }
         
         if (isGameEnd == true)
