@@ -63,6 +63,14 @@ public class TokenBackgroundController : BaseController
         BlankTokenDic.GetValueOrDefault(key).onTokenStack = null;
         BlankOnTokenStackDic.Remove(key);
     }
+
+    public void RemoveOnToken(TokenController removeToken)
+    {
+        if (BlankTokenDic[removeToken.groupNum] == null) return;
+
+        BlankTokenDic[removeToken.groupNum].RemoveOnToken(removeToken);
+    }
+        
     
     
 

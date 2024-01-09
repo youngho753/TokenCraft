@@ -197,13 +197,28 @@ public static class Util
 
     }
     
-    public static Stack<TokenController> ConcatTokenStack(Stack<TokenController> stack1, Stack<TokenController> stack2)
+    public static Stack<TokenController> ConcatTokenStack(Stack<TokenController> stack1, Stack<TokenController> stack2, bool withoutBlankToken = false)
     {
         Stack<TokenController> copyStack1 = DeepCopy(stack1);
         Stack<TokenController> copyStack2 = DeepCopy(stack2);
         
         if (copyStack1 == null) copyStack1 = new Stack<TokenController>();
         if (copyStack2 == null) copyStack2 = new Stack<TokenController>();
+        
+        //Blank토큰을 빼려면 stack1의 가장 아래 토큰이 blank토큰일때만 빼면 된다.
+        if (withoutBlankToken)
+        {
+            Stack<TokenController> reverseCopyStack = ReverseStack(copyStack1);
+            
+            if(reverseCopyStack.Count > 0)
+
+                if (reverseCopyStack.Peek().GetComponent<BlankTokenController>() != null)
+                {
+                    reverseCopyStack.Pop();
+                }
+
+            copyStack1 = ReverseStack(reverseCopyStack);
+        }
 
         //Reverse이후 pop
         copyStack2 = ReverseStack(copyStack2);
@@ -402,6 +417,36 @@ public static class Util
         }
         
         return null;
+    }
+
+    public static void RemoveTokenDic(TokenController removeToken)
+    {
+        if (!Managers.Game._tokenStackDic.ContainsKey(removeToken.groupNum)) return;
+
+        Stack<TokenController> tokenStack = Managers.Game._tokenStackDic.GetValueOrDefault(removeToken.groupNum);
+        Stack<TokenController> copyTokenStack = DeepCopy(tokenStack);
+
+        Stack<TokenController> onTokenStack = new Stack<TokenController>();
+        Stack<TokenController> underTokenStack = new Stack<TokenController>();
+        
+        foreach (TokenController tc in copyTokenStack)
+        {
+            if (tc.pkGroupNum == removeToken.pkGroupNum)
+            {
+                
+                break;
+
+            }
+            
+            onTokenStack.Push(copyTokenStack.Pop());
+        }
+        copyTokenStack.Pop();
+        
+        onTokenStack = ReverseStack(onTokenStack);
+
+        underTokenStack = copyTokenStack;
+
+        ConcatTokenStack(underTokenStack, onTokenStack);
     }
 
 

@@ -269,7 +269,7 @@ public class MouseController : MonoBehaviour
 
         if (blankToken == null) return;
         
-        blankToken.productToken.AddTokenStack(blankToken._backgroundOrder, mouseTokenStack);
+        blankToken.productToken.AddTokenStack(blankToken._backgroundOrder, Util.ConcatTokenStack(mouseUpTokenStack,mouseTokenStack,true));
 
         foreach (TokenController tc in mouseTokenStack)
         {

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class TokenController : BaseController
@@ -69,4 +71,17 @@ public class TokenController : BaseController
         this.groupNum = groupNum;
     }
 
+    public virtual void onUsed()
+    {
+        
+        Util.RemoveTokenDic(this);
+
+        if (InBlankToken.onTokenStack != null)
+        {
+            InBlankToken.productToken.RemoveToken(this);
+        }
+        
+        gameObject.SetActive(false);
+            
+    }
 }
