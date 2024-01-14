@@ -212,17 +212,17 @@ public class MouseController : MonoBehaviour
         TokenController tc = null;
         for (int i = 0; i < targets.Length; i++)
         {
-            if (Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller) != null &&
-                Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller).groupNum == _mouseTokenStack.Peek().groupNum) 
+            if (Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptNatureTokencontroller + Constants.ExceptFactoryTokenContoller) != null &&
+                Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptNatureTokencontroller + Constants.ExceptFactoryTokenContoller).groupNum == _mouseTokenStack.Peek().groupNum) 
                 continue;
             
-            if (Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptBlankTokenContoller) == null) continue;
+            if (Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptNatureTokencontroller + Constants.ExceptFactoryTokenContoller) == null) continue;
 
             //단일 토큰을 위해 사용
-            tc = Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller);
+            tc = Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptNatureTokencontroller + Constants.ExceptFactoryTokenContoller);
 
              
-            getStack = Managers.Game._tokenStackDic.GetValueOrDefault(Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptBlankTokenContoller).groupNum, null);
+            getStack = Managers.Game._tokenStackDic.GetValueOrDefault(Util.GetTokenController(targets[i].transform.gameObject,Constants.ExceptNatureTokencontroller + Constants.ExceptFactoryTokenContoller).groupNum, null);
 
             copyStack = Util.DeepCopy(getStack);
 

@@ -8,6 +8,20 @@ public class ProductTokenController : TokenController
 { 
     [SerializeField]
     public TokenBackgroundController TokenBackground;
+    
+    public override bool Init()
+    {
+        if (base.Init() == false) return false;
+
+        RigidBody = GetComponent<Rigidbody2D>();
+        Anim = GetComponent<Animator>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        CircleCollider2D = GetComponent<CircleCollider2D>();
+
+        RigidBody.mass = 1000000;
+        
+        return true;
+    }
    
     public override void MoveToTarget(Vector3 position, float time, bool snapping)
     {
@@ -15,6 +29,8 @@ public class ProductTokenController : TokenController
         
         TokenBackground.MoveToTarget(transform.position + new Vector3(0,0.8f,0));
         
+        StartCoroutine(CoStartProduction()); // 코루틴을 시작하는 함수
+
     }
 
     public virtual void SetTokenStack(int key, Stack<TokenController> tokenStack)
@@ -49,6 +65,18 @@ public class ProductTokenController : TokenController
     {
         while (true)
         {
+            List<TokenController> onTokenList = new List<TokenController>();
+            
+            foreach(BlankTokenController blankTokenController in TokenBackground.BlankTokenDic.Values)
+            {
+                onTokenList.Add(blankTokenController.onTokenStack.Peek());
+            }
+
+            foreach (TokenController tc in onTokenList)
+            {
+                tc.onUsed();
+            }
+            
             yield return new WaitForSeconds(3f);
             
         }

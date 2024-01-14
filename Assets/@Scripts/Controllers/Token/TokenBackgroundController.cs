@@ -14,7 +14,6 @@ public class TokenBackgroundController : BaseController
     protected Animator Anim;
 
     public Dictionary<int, BlankTokenController> BlankTokenDic = new Dictionary<int, BlankTokenController>();
-    public Dictionary<int, Stack<TokenController>> BlankOnTokenStackDic = new Dictionary<int, Stack<TokenController>>();
 
     public int maxTokenCnt;
     
@@ -51,8 +50,6 @@ public class TokenBackgroundController : BaseController
     
     public virtual void AddTokenStack(int key, Stack<TokenController> tokenStack)
     {
-        BlankOnTokenStackDic.Remove(key);
-        BlankOnTokenStackDic.Add(key, tokenStack);
         Util.SettingTokenStack(tokenStack);
         BlankTokenDic.GetValueOrDefault(key).onTokenStack = tokenStack;
 
@@ -61,14 +58,13 @@ public class TokenBackgroundController : BaseController
     public virtual void RemoveTokenStack(int key)
     {
         BlankTokenDic.GetValueOrDefault(key).onTokenStack = null;
-        BlankOnTokenStackDic.Remove(key);
     }
 
     public void RemoveOnToken(TokenController removeToken)
     {
-        if (BlankTokenDic[removeToken.groupNum] == null) return;
-
-        BlankTokenDic[removeToken.groupNum].RemoveOnToken(removeToken);
+        if (!Managers.Game._tokenStackDic.ContainsKey(removeToken.groupNum)) return;
+        
+        removeToken.InBlankToken.RemoveOnToken(removeToken);
     }
         
     

@@ -396,25 +396,29 @@ public static class Util
      */
     public static TokenController GetTokenController(GameObject gameObject, int exceptValue)
     {
-        if (gameObject.GetComponent<BlankTokenController>())
-        {
-            return gameObject.GetComponent<BlankTokenController>();
-        }
-        
-        if (gameObject.GetComponent<NatureTokenController>())
-        {
-            return gameObject.GetComponent<NatureTokenController>();
-        }
-        
+        if (exceptValue >= Constants.ExceptMaterialTokenContoller)
+            exceptValue -= Constants.ExceptMaterialTokenContoller;
+        else
+            if (gameObject.GetComponent<MaterialTokenController>())
+                return gameObject.GetComponent<MaterialTokenController>();
+
+        if (exceptValue >= Constants.ExceptFactoryTokenContoller)
+            exceptValue -= Constants.ExceptFactoryTokenContoller;
+        else
         if (gameObject.GetComponent<FactoryTokenController>())
-        {
             return gameObject.GetComponent<FactoryTokenController>();
-        }
         
-        if (gameObject.GetComponent<MaterialTokenController>())
-        {
-            return gameObject.GetComponent<MaterialTokenController>();
-        }
+        if (exceptValue >= Constants.ExceptNatureTokencontroller)
+            exceptValue -= Constants.ExceptNatureTokencontroller;
+        else
+        if (gameObject.GetComponent<NatureTokenController>())
+            return gameObject.GetComponent<NatureTokenController>();
+        
+        if (exceptValue >= Constants.ExceptBlankTokenContoller)
+            exceptValue -= Constants.ExceptBlankTokenContoller;
+        else
+        if (gameObject.GetComponent<BlankTokenController>())
+            return gameObject.GetComponent<BlankTokenController>();
         
         return null;
     }

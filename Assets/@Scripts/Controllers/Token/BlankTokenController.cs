@@ -49,6 +49,7 @@ public class BlankTokenController : TokenController
     {
         if (this.onTokenStack == null) return;
         
+        // 없어질토큰 제외한 스택구하기
         Stack<TokenController> copyTokenStack = Util.DeepCopy(this.onTokenStack);
 
         Stack<TokenController> onTokenStack = new Stack<TokenController>();
@@ -70,6 +71,12 @@ public class BlankTokenController : TokenController
 
         underTokenStack = copyTokenStack;
 
-        Util.ConcatTokenStack(underTokenStack, onTokenStack, true);
+        Stack<TokenController> concatTokenStack = Util.ConcatTokenStack(underTokenStack, onTokenStack, true);
+
+        
+        //Setting
+        Util.SettingTokenDictionary(concatTokenStack);
+
+        removeToken.InBlankToken.onTokenStack = concatTokenStack;
     }
 }
