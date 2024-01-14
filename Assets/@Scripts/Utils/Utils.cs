@@ -86,7 +86,6 @@ public static class Util
         return result;
     }
 
-   
     public static List<Transform> GetFindMonstersInFanShape(Vector3 origin, Vector3 forward, float radius = 2,  float angleRange = 80 )
     {
         List<Transform> listMonster = new List<Transform>();
@@ -182,210 +181,58 @@ public static class Util
         return copyQueue;
     }
     
-    public static Stack<TokenController> ReverseStack(Stack<TokenController> tokenStack)
-    {
-        if (tokenStack == null || tokenStack.Count == 0) return tokenStack;
-
-        Stack<TokenController> newStack = new Stack<TokenController>();
-
-        foreach (TokenController tc in tokenStack)
-        {
-            newStack.Push(tc);
-        }
-        
-        return newStack;
-
-    }
     
-    public static Stack<TokenController> ConcatTokenStack(Stack<TokenController> stack1, Stack<TokenController> stack2, bool withoutBlankToken = false)
-    {
-        Stack<TokenController> copyStack1 = DeepCopy(stack1);
-        Stack<TokenController> copyStack2 = DeepCopy(stack2);
-        
-        if (copyStack1 == null) copyStack1 = new Stack<TokenController>();
-        if (copyStack2 == null) copyStack2 = new Stack<TokenController>();
-        
-        //Blank토큰을 빼려면 stack1의 가장 아래 토큰이 blank토큰일때만 빼면 된다.
-        if (withoutBlankToken)
-        {
-            Stack<TokenController> reverseCopyStack = ReverseStack(copyStack1);
-            
-            if(reverseCopyStack.Count > 0)
 
-                if (reverseCopyStack.Peek().GetComponent<BlankTokenController>() != null)
-                {
-                    reverseCopyStack.Pop();
-                }
-
-            copyStack1 = ReverseStack(reverseCopyStack);
-        }
-
-        //Reverse이후 pop
-        copyStack2 = ReverseStack(copyStack2);
-        while (copyStack2.Count > 0)
-        { 
-            copyStack1.Push(copyStack2.Pop());
-            
-        }
-
-        return copyStack1;
-
-    }
-
-    /**
-     * 스택에서 선택한 토큰보다 아래의 토큰을 Return
-     */
-    public static Stack<TokenController> GetUnderTokenStack(TokenController token)
-    {
-        Stack<TokenController> tokenStack = Managers.Game._tokenStackDic.GetValueOrDefault(token.groupNum, null);
-        Stack<TokenController> copyStack = DeepCopy(tokenStack);
-
-        // 단일 토큰을 클릭했을 경우
-        if (copyStack == null) return null;
-        
-        // 다중 토큰을 클릭했을 경우
-        // 인자값으로 들어온 토큰을 만날때 까지 Pop하면 남은토큰은 아래의 토큰이 됨.
-        while(copyStack.Count > 0){
-            TokenController tc = copyStack.Pop();
-
-            if (tc.pkGroupNum == token.pkGroupNum)
-            {
-                break;
-            } 
-        }
-
-        if (copyStack.Count == 0) return null;
-
-        return copyStack;
-    }
-    
-    /**
-     * @desc 인자로 받은 토큰을 포함한 위의 토큰을 Get
-     */
-    public static Stack<TokenController> GetOnTokenStack(TokenController token)
-    {
-        Stack<TokenController> tokenStack = Managers.Game._tokenStackDic.GetValueOrDefault(token.groupNum, null);
-        Stack<TokenController> copyStack = DeepCopy(tokenStack);
-
-        
-        // 다중 토큰을 클릭했을 경우
-        // 스택을 뒤집어 인자값으로 들어온 토큰을 만날때 까지 위에서부터 빼고 다시 뒤집는다. 
-        Stack<TokenController> newStack = ReverseStack(copyStack);
-        while(newStack.Count > 0)
-        {
-            TokenController tc = newStack.Peek();
-            
-            if (tc.pkGroupNum == token.pkGroupNum)
-            {
-                break;
-            }
-
-            newStack.Pop();
-        }
-
-        newStack = ReverseStack(newStack);
-
-        return newStack;
-    }
-    
-    public static TokenController GetLowestToken(Stack<TokenController> tokenStack)
-    {
-        if (tokenStack == null || tokenStack.Count == 0) return null;
-        
-        Stack<TokenController> newStack = new Stack<TokenController>();
-
-        foreach (TokenController tc in tokenStack)
-        {
-            newStack.Push(tc);
-        }
-
-        return newStack.Peek();
-    }
-
-    
-    
-    /**
-     * @desc Dictionary에서 토큰스택을 가지고온다. 없으면 Null
-     */
-    public static Stack<TokenController> GetTokenStack(int pkGroupNum)
-    {
-        Stack<TokenController> stackToken = new Stack<TokenController>();
-
-        stackToken = Managers.Game._tokenStackDic.GetValueOrDefault(pkGroupNum, null);
-
-        return stackToken;
-
-    }
-
-    /**
-     * @param 
-     * @desc 
-     */
-    public static void MoveTokenStack(Stack<TokenController> tokenStack, Vector3 targetPosition)
-    {
-        TokenController lowestToken = GetLowestToken(tokenStack);
-        
-        int idx = tokenStack.Count - 1;
-        if (lowestToken.gameObject.GetComponent<BlankTokenController>() != null) idx -= 1;        
-        foreach (TokenController tc in tokenStack)
-        {
-            if (idx < 0) return;
-            
-            tc.MoveToTarget( targetPosition + new Vector3(0f, idx * 0.2f, 0f), idx * 0.05f, false);
-            idx--;
-        }        
-    }
-    
-    public static Stack<TokenController> SettingTokenStack(Stack<TokenController> tokenStack, bool isMoveTokenStack = false, TokenController deleteToken = null)
-    {
-        if (tokenStack == null || tokenStack.Count == 0)
-        {
-            SettingTokenDictionary(tokenStack,deleteToken);
-            return null;
-        }
-        
-        int idx = tokenStack.Count - 1;
-        
-        TokenController lowestToken = GetLowestToken(tokenStack);
-        foreach (TokenController tc in tokenStack)
-        {
-            tc.SettingToken(lowestToken.pkGroupNum, idx, isMoveTokenStack);
-            idx--;
-        }
-        
-        MoveTokenStack(tokenStack, lowestToken.transform.position);
-        
-        SettingTokenDictionary(tokenStack);
-
-        return tokenStack;
-    }
+    // public static Stack<TokenController> SettingTokenStack(Stack<TokenController> tokenStack, bool isMoveTokenStack = false, TokenController deleteToken = null)
+    // {
+    //     if (tokenStack == null || tokenStack.Count == 0)
+    //     {
+    //         SettingTokenDictionary(tokenStack,deleteToken);
+    //         return null;
+    //     }
+    //     
+    //     int idx = tokenStack.Count - 1;
+    //     
+    //     TokenController lowestToken = GetLowestToken(tokenStack);
+    //     foreach (TokenController tc in tokenStack)
+    //     {
+    //         tc.SettingToken(lowestToken.pkGroupNum, idx, isMoveTokenStack);
+    //         idx--;
+    //     }
+    //     
+    //     MoveTokenStack(tokenStack, lowestToken.transform.position);
+    //     
+    //     SettingTokenDictionary(tokenStack);
+    //
+    //     return tokenStack;
+    // }
     
     /**
      * @desc deleteToken을 받으면 토큰스택카운트가 0개일때도 tokenStackDic에서 GroupNum으로 remove를 한다.
      */
-    public static void SettingTokenDictionary(Stack<TokenController> tokenStack, TokenController deleteToken = null)
-    {
-        // deleteToken을 받으면 토큰스택카운트가 0개일때도 tokenStackDic에서 GroupNum으로 remove를 한다.
-        if ((tokenStack == null || tokenStack.Count == 0) && deleteToken != null)
-        {
-            if (Managers.Game._tokenStackDic.ContainsKey(deleteToken.groupNum))
-            {
-                Managers.Game._tokenStackDic.Remove(deleteToken.groupNum);
-            }
-        }
-
-        //deleteToken을 안 받고 토큰스택카운트가 0개면 return
-        if (tokenStack == null || tokenStack.Count == 0) return;
-
-        
-        //가장 아래에 있는 토큰 구하기
-        TokenController lowestToken = GetLowestToken(tokenStack);
-        
-        
-        //Dictionary Upsert
-        if(Managers.Game._tokenStackDic.ContainsKey(lowestToken.pkGroupNum)) Managers.Game._tokenStackDic.Remove(lowestToken.pkGroupNum);
-        Managers.Game._tokenStackDic.Add(lowestToken.pkGroupNum,tokenStack);
-    }
+    // public static void SettingTokenDictionary(Stack<TokenController> tokenStack, TokenController deleteToken = null)
+    // {
+    //     // deleteToken을 받으면 토큰스택카운트가 0개일때도 tokenStackDic에서 GroupNum으로 remove를 한다.
+    //     if ((tokenStack == null || tokenStack.Count == 0) && deleteToken != null)
+    //     {
+    //         if (Managers.Game._tokenStackDic.ContainsKey(deleteToken.groupNum))
+    //         {
+    //             Managers.Game._tokenStackDic.Remove(deleteToken.groupNum);
+    //         }
+    //     }
+    //
+    //     //deleteToken을 안 받고 토큰스택카운트가 0개면 return
+    //     if (tokenStack == null || tokenStack.Count == 0) return;
+    //
+    //     
+    //     //가장 아래에 있는 토큰 구하기
+    //     TokenController lowestToken = GetLowestToken(tokenStack);
+    //     
+    //     
+    //     //Dictionary Upsert
+    //     if(Managers.Game._tokenStackDic.ContainsKey(lowestToken.pkGroupNum)) Managers.Game._tokenStackDic.Remove(lowestToken.pkGroupNum);
+    //     Managers.Game._tokenStackDic.Add(lowestToken.pkGroupNum,tokenStack);
+    // }
 
     /**
      * @desc ExceptValue
@@ -414,43 +261,13 @@ public static class Util
         if (gameObject.GetComponent<NatureTokenController>())
             return gameObject.GetComponent<NatureTokenController>();
         
-        if (exceptValue >= Constants.ExceptBlankTokenContoller)
-            exceptValue -= Constants.ExceptBlankTokenContoller;
-        else
-        if (gameObject.GetComponent<BlankTokenController>())
-            return gameObject.GetComponent<BlankTokenController>();
+        // if (exceptValue >= Constants.ExceptBlankTokenContoller)
+        //     exceptValue -= Constants.ExceptBlankTokenContoller;
+        // else
+        // if (gameObject.GetComponent<BlankTokenController>())
+        //     return gameObject.GetComponent<BlankTokenController>();
         
         return null;
-    }
-
-    public static void RemoveTokenDic(TokenController removeToken)
-    {
-        if (!Managers.Game._tokenStackDic.ContainsKey(removeToken.groupNum)) return;
-
-        Stack<TokenController> tokenStack = Managers.Game._tokenStackDic.GetValueOrDefault(removeToken.groupNum);
-        Stack<TokenController> copyTokenStack = DeepCopy(tokenStack);
-
-        Stack<TokenController> onTokenStack = new Stack<TokenController>();
-        Stack<TokenController> underTokenStack = new Stack<TokenController>();
-        
-        foreach (TokenController tc in copyTokenStack)
-        {
-            if (tc.pkGroupNum == removeToken.pkGroupNum)
-            {
-                
-                break;
-
-            }
-            
-            onTokenStack.Push(copyTokenStack.Pop());
-        }
-        copyTokenStack.Pop();
-        
-        onTokenStack = ReverseStack(onTokenStack);
-
-        underTokenStack = copyTokenStack;
-
-        ConcatTokenStack(underTokenStack, onTokenStack);
     }
 
 

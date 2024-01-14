@@ -26,28 +26,16 @@ public class GameData
     public int Dia = 0;
     public int NumDeadMonsters = 0;
     public float SoulCount = 0;
-    public List<TokenController> TokenIndex = new List<TokenController>();
-    public Dictionary<int,Stack<TokenController>> TokenStackList = new Dictionary<int,Stack<TokenController>>();
+    public TokenController OnClickToken;
+
 }
 public class GameManager
 {
     #region TokenControl
-    
-    // public int CurrentStageIndex
-    // {
-    //     get { return _gameData.CurrentStageIndex; }
-    //     set { _gameData.CurrentStageIndex = value; }
-    // }
-    public List<TokenController> _tokenIndex
+    public TokenController OnClickToken
     {
-        get { return _gameData.TokenIndex; }
-        set { _gameData.TokenIndex = value; }
-    }
-    
-    public Dictionary<int,Stack<TokenController>> _tokenStackDic
-    {
-        get { return _gameData.TokenStackList; }
-        set { _gameData.TokenStackList = value; }
+        get { return _gameData.OnClickToken; }
+        set { _gameData.OnClickToken = value; }
     }
     
     #endregion

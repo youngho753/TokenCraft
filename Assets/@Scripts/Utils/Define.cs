@@ -40,10 +40,10 @@ public class Define
     
     public enum ObjectType
     {
-        Ui,
-        EnemyToken,
-        ProductToken,
         MaterialToken,
+        NatureToken,
+        FactorialToken,
+        EnemyToken,
         Null,
     }
     

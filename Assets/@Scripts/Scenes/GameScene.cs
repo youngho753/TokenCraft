@@ -54,20 +54,20 @@ public class GameScene : BaseScene
             
         }else if (Input.GetKeyDown(KeyCode.F3))
         {
-            Stack<TokenController> tokenStack = new Stack<TokenController>();
-
-            TokenController lowestToken = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
-            tokenStack.Push(lowestToken);
-
-            TokenController tc;
-            for(int i=1; i<10; i++){
-                tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
-                Util.SettingTokenStack(null, false, tc);
-                
-                tokenStack.Push(tc);
-            }
-
-            Util.SettingTokenStack(tokenStack);
+            // Stack<TokenController> tokenStack = new Stack<TokenController>();
+            //
+            // TokenController lowestToken = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
+            // tokenStack.Push(lowestToken);
+            //
+            // TokenController tc;
+            // for(int i=1; i<10; i++){
+            //     tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
+            //     Util.SettingTokenStack(null, false, tc);
+            //     
+            //     tokenStack.Push(tc);
+            // }
+            //
+            // Util.SettingTokenStack(tokenStack);
             // Managers.Game._tokenStackDic.Add(lowestToken.pkGroupNum,tokenStack);
         }
         
