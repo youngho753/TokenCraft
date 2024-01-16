@@ -241,7 +241,7 @@ public static class Util
      * 4 : FactoryTokenContoller
      * 8 : MaterialTokenContoller
      */
-    public static TokenController GetTokenController(GameObject gameObject, int exceptValue)
+    public static TokenController GetTokenController(GameObject gameObject, int exceptValue = 0)
     {
         if (exceptValue >= Constants.ExceptMaterialTokenContoller)
             exceptValue -= Constants.ExceptMaterialTokenContoller;

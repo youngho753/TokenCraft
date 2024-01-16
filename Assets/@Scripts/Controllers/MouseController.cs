@@ -38,18 +38,13 @@ public class MouseController : MonoBehaviour
         
     }
 
-    void FixedUpdate()
-    {
-
-    }
-
     void OnMouseDown()
     {
         if (Input.GetMouseButtonDown(0))
         {
             /** 1. 클릭한 토큰 찾기 */
             TokenController mouseDownToken = GetMouseDownToken();
-            if (mouseDownToken == null) return;
+            if (!mouseDownToken.IsValid()) return;
 
             /** 2. _mouseTokenStack 세팅 */
             mouseDownToken.isMouseClicked = true;
@@ -68,7 +63,7 @@ public class MouseController : MonoBehaviour
 
         
         /** 토큰 움직임 */
-        if (_mouseToken == null ) return;
+        if (_mouseToken is null ) return;
         _mouseToken.position = _mousePosition;
     }
 
@@ -77,34 +72,22 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (_mouseToken == null) return;
-            
-        //     // 마우스를 놨을때 
-        //     
-        //     /** 1. 마우스 놨을때 토큰 스택 Get */
-        //     Stack<TokenController> mouseUpTokenStack = GetMouseUpTokenStack();
-        //     
-        //     
-        //     /** 1. 마우스 놨을때 데이터 세팅 */
-        //     SetMouseUpDataSetting(mouseUpTokenStack,_mouseTokenStack);
-        //
-        //
-        //     /** 2. 바닥에 있는 토큰스택과 마우스로 들고 있는 토큰스택 concat */
-        //     Stack<TokenController> concatTokenStack = Util.ConcatTokenStack(mouseUpTokenStack, _mouseTokenStack);
-        //
-        //
-        //     /** 3. 토큰스택 tokenDic 정리 */
-        //     Util.SettingTokenStack(null, false, _mouseTokenStack.Peek());
-        //     Util.SettingTokenStack(concatTokenStack);
-        // // }
+            if (!_mouseToken.IsValid()) return;
 
-            /** 4._mousetokenStack 세팅 */
+            TokenController mouseDownToken = GetMouseUpToken();
+            
+            /** mouseClickToken에 MouseUp 주기 */
+            _mouseToken.isMouseClicked = false;
+            
+            /** 아래토큰에 클릭토큰주기 */
+            if(mouseDownToken.IsValid()) mouseDownToken.SetOnThisToken(_mouseToken);
+
+            /** ._mousetokenStack 세팅 */
             _mouseToken = null;
 
         }
     }
 
-    #region MouseDown
     private TokenController GetMouseDownToken()
     {
         //해당 좌표에 있는 오브젝트 찾기
@@ -122,49 +105,21 @@ public class MouseController : MonoBehaviour
         
         return null;
     }
+    
+    private TokenController GetMouseUpToken()
+    {
+        RaycastHit2D[] targets = Physics2D.CircleCastAll(_mousePosition, 0.5f, Vector2.zero, 0);
 
-  
+        TokenController tc = null;
+        for (int i = 0; i < targets.Length; i++)
+        {
+            if (Util.GetTokenController(targets[i].transform.gameObject).IsValid() && Util.GetTokenController(targets[i].transform.gameObject).isMouseClicked) 
+                continue;
 
-    #endregion
-
-    #region MouseMove
-
-    
-    
-    #endregion
-    
-    #region MouseUp
-    
-   
-    
-    #endregion
-    
-
-   
-
-    
+            return Util.GetTokenController(targets[i].transform.gameObject);
+        }
+        
+        return null;
+    }
 }
-
-// 1.UI  2.적  3.건물 4.일반토큰
-/** case 3. 건물위에 놨을때 */
-/** 1. 마우스 놨을때 건물 Get */
-// TokenBackgroundController mouseUpTokenBackground = GetMouseUpTokenBackground();
-//
-// // 건물클릭
-// if (mouseUpTokenBackground != null)
-// {
-//     // Util.MoveTokenStack(_mouseTokenStack, mouseUpTokenBackground.transform.position + new Vector3((1.2f * mouseUpTokenBackground.TokenStacks.Count) -0.6f,-0.3f,0f));
-//     /** 1. */
-//     
-//     
-//     // mouseUpTokenBackground.AddTokenStack(_mouseTokenStack);
-//     foreach (TokenController tc in _mouseTokenStack)
-//     {
-//         // tc.TokenBackground = mouseUpTokenBackground;
-//     }
-//     
-//     Debug.Log("건물 클릭!!");
-// }
-// else
-// {
-/** case 2. 토큰위에 놨을때 */
+    

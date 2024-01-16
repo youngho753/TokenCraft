@@ -13,6 +13,9 @@ public class MaterialTokenController : TokenController
     public override bool Init()
     {
         base.Init();
+
+        ObjectType = Define.ObjectType.MaterialToken;
+        
         return true;
     }
     
@@ -21,10 +24,7 @@ public class MaterialTokenController : TokenController
     {
     }
 
-    public override void SettingToken(int groupNum, int idx, bool isMoveTokenStack = false)
-    {
-        base.SettingToken(groupNum, idx, isMoveTokenStack);
-    }
+ 
 
  
 }

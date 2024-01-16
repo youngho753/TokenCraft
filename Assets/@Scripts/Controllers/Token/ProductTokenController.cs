@@ -8,9 +8,27 @@ using UnityEngine;
 public class ProductTokenController : TokenController
 {
     public Dictionary<int, TokenController> ProductOnTokenDic;
+    public List<BlankZoneController> BlankZoneList;
 
     public int startBlankZoneCnt = 2;
+    public int blankZoneCnt = 2;
     public int inBlankZoneOrder = -1;
+    
+    public override Vector3 position
+    {
+        get { return transform.position; }
+        set
+        {
+            transform.position = value;
+            if(OnThisToken != null) OnThisToken.position = value;
+            
+            //ProductToken전용
+            for (int i = 0; i < BlankZoneList.Count; i++)
+            {
+                BlankZoneList[i].transform.position = transform.position + new Vector3(-0.6f + (1.2f * i), 1f, 0);
+            }
+        }
+    }
     
     public override bool Init()
     {
@@ -23,8 +41,9 @@ public class ProductTokenController : TokenController
         //BlankZone 초기 생성
         for (int i = 0; i < startBlankZoneCnt; i++)
         {
-            BlankZoneController bzc = Managers.Object.Spawn<BlankZoneController>(transform.position + new Vector3(-0.6f + (1.2f * i), 0.2f, 0),0,"BlankZone");
+            BlankZoneController bzc = Managers.Object.Spawn<BlankZoneController>(transform.position,0,"BlankZone");
             bzc.order = i;
+            BlankZoneList.Add(bzc);
         }
         
         

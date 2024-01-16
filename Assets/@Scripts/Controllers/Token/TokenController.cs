@@ -15,39 +15,32 @@ public class TokenController : BaseController
     public CircleCollider2D CircleCollider2D { get; set; }
     protected Animator Anim;
 
-    private TokenController OnThisToken;
-    private TokenController UnderThisToken;
+    protected TokenController _onThisToken;
+    protected TokenController _underThisToken;
 
-    // //마우스로 움직이고 있는 토큰일 경우
-// if (isMoveTokenStack)
-// {
-//     CircleCollider2D.isTrigger = true;
-//     SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum + idx;
-// }
-// //바닥에 놓여있는 토큰인 경우
-// else
-// {
-//     //이 토큰이 최하단인 경우
-//     if(idx == 0)
-//     {
-//         CircleCollider2D.isTrigger = false;   
-//     }
-//     //이 토큰이 최하단이 아닌경우
-//     else
-//     {
-//         CircleCollider2D.isTrigger = true;
-//     }
-//             
-//     SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + idx;
-//             
-//             
-// }
-    public bool isMouseClicked
+    public TokenController OnThisToken
     {
-        get { return isMouseClicked;}
+        get => _onThisToken;
         set
         {
-            OnMouseClicked(value,0);
+            _onThisToken = value;
+            OnMouseClicked(value);
+
+        }
+    }
+    
+
+    public bool _isMouseClicked;
+    public bool isMouseClicked
+    {
+        get { return _isMouseClicked;}
+        set
+        {
+            _isMouseClicked = value;
+            
+            if(value) OnMouseClicked(0);
+            else                OnMouseUnClicked(0);
+
         }
     }
 
@@ -55,13 +48,13 @@ public class TokenController : BaseController
     
     public Action OnUnderMoved;
     
-    public Vector3 position
+    public virtual Vector3 position
     {
-        get { return transform.position; }
+        get { return new Vector3(); }
         set
         {
             transform.position = value;
-            if(OnThisToken != null) OnThisToken.position = value;
+            if(OnThisToken.IsValid()) OnThisToken.position = value + new Vector3(0,0.2f,0);
         }
     }
 
@@ -85,21 +78,41 @@ public class TokenController : BaseController
         
         return true;
     }
-
-    public void OnMouseClicked(bool isMouseClicked ,int layer)
+    
+    #region 마우스 처리로직(OnMouseClicked,OnMouseUnClicked)
+    
+    public void OnMouseClicked(int layer)
     {
-        CircleCollider2D.isTrigger = isMouseClicked;
+        //첫 하나만 적용
+        if(layer == 0){
+            CircleCollider2D.isTrigger = false;
+            SetUnderThisToken(null);
+        }
         
-        if(isMouseClicked)  SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum + layer;
-        else                SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + layer;
+        CircleCollider2D.isTrigger = true;
         
+        SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum + layer;
         
         //위토큰세팅
-        if(OnThisToken) OnThisToken.OnMouseClicked(isMouseClicked, ++layer);
-        
-        
+        if(OnThisToken.IsValid()) OnThisToken.OnMouseClicked(++layer);
     }
 
+    public void OnMouseUnClicked(int layer)
+    {
+        //첫 하나만 적용
+        if(layer == 0){
+            CircleCollider2D.isTrigger = false;
+        }
+        
+        SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + layer;
+        
+        //위토큰세팅
+        if(OnThisToken.IsValid()) OnThisToken.OnMouseUnClicked(++layer);
+    }
+    
+    #endregion
+
+    #region TokenDataSetting부분(OnThisToken,UnderThisToken)
     
     /**
      * @desc 나와 같지 않은 ObjectType이면 스킵
@@ -107,9 +120,9 @@ public class TokenController : BaseController
     public void SetOnThisToken(TokenController token)
     {
         //위에 아무 토큰도 없어질 경우 위 토큰 SetUnderThisToken(null)
-        if (token == null || !token.enabled)
+        if (!token.IsValid())
         {
-            if (OnThisToken != null && OnThisToken.enabled)
+            if (OnThisToken.IsValid())
             {
                 OnThisToken.SetUnderThisToken(null);
                 return;
@@ -125,6 +138,9 @@ public class TokenController : BaseController
         
         //위에 새로운 토큰이 왔을 때
         OnThisToken = token;
+        OnThisToken.CircleCollider2D.isTrigger = true;
+        OnThisToken.position = transform.position + new Vector3(0,0.2f,0);
+        OnThisToken.SpriteRenderer.sortingOrder = SpriteRenderer.sortingOrder + 1;
         OnThisToken.SetUnderThisToken(this);
     }
     
@@ -132,7 +148,11 @@ public class TokenController : BaseController
     {
         UnderThisToken = token;
     }
+    
+    #endregion
 
+    #region DataGet(GetHighestToken,GetLowestToken)
+    
     public virtual TokenController GetHighestToken()
     {
         if (OnThisToken != null && OnThisToken.enabled)
@@ -149,44 +169,18 @@ public class TokenController : BaseController
             return this;
     }
     
+    #endregion
+
+    #region 충돌이벤트(OnCollisionStay2D)
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         position = transform.position;
     }
+
+    #endregion
     
     
-
-
-    
-    public virtual void SettingToken(int groupNum, int idx, bool isMoveTokenStack = false)
-    {
-        //마우스로 움직이고 있는 토큰일 경우
-        if (isMoveTokenStack)
-        {
-            CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum + idx;
-        }
-        //바닥에 놓여있는 토큰인 경우
-        else
-        {
-            //이 토큰이 최하단인 경우
-            if(idx == 0)
-            {
-                CircleCollider2D.isTrigger = false;   
-            }
-            //이 토큰이 최하단이 아닌경우
-            else
-            {
-                CircleCollider2D.isTrigger = true;
-            }
-            
-            SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + idx;
-            
-            
-        }
-        
-    }
-
     // public virtual void onUsed()
     // {
     //     
