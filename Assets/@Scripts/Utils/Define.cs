@@ -47,6 +47,15 @@ public class Define
         Null,
     }
     
+    public enum TokenType
+    {
+        MaterialToken,
+        NatureToken,
+        FactorialToken,
+        EnemyToken,
+        Null,
+    }
+    
     public enum MaterialType
     {
         Gold,

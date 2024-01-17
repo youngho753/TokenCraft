@@ -15,14 +15,17 @@ public class MaterialTokenController : TokenController
         base.Init();
 
         ObjectType = Define.ObjectType.MaterialToken;
+        TokenType = Define.TokenType.MaterialToken;
         
         return true;
     }
     
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        base.Update();
     }
+
 
  
 

@@ -9,6 +9,7 @@ public class NatureTokenController : ProductTokenController
         if (base.Init() == false) return false;
         
         ObjectType = Define.ObjectType.MaterialToken;
+        TokenType = Define.TokenType.NatureToken;
         
         return true;
     }

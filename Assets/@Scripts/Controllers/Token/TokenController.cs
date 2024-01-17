@@ -9,53 +9,36 @@ using UnityEngine;
 
 public class TokenController : BaseController
 {
+    public Define.TokenType TokenType { get; protected set; }
+    
     [SerializeField]
     public SpriteRenderer SpriteRenderer;
     public Rigidbody2D RigidBody { get; set; }
     public CircleCollider2D CircleCollider2D { get; set; }
     protected Animator Anim;
 
-    protected TokenController _onThisToken;
-    protected TokenController _underThisToken;
+    private TokenController _onThisToken;
+    private TokenController _underThisToken;
 
-    public TokenController OnThisToken
-    {
-        get => _onThisToken;
-        set
-        {
-            _onThisToken = value;
-            OnMouseClicked(value);
-
-        }
-    }
-    
 
     public bool _isMouseClicked;
-    public bool isMouseClicked
-    {
-        get { return _isMouseClicked;}
-        set
-        {
-            _isMouseClicked = value;
-            
-            if(value) OnMouseClicked(0);
-            else                OnMouseUnClicked(0);
-
-        }
-    }
-
-    public int OnProductTokenOrder;
     
-    public Action OnUnderMoved;
-    
-    public virtual Vector3 position
+
+    public virtual Vector3 Position
     {
-        get { return new Vector3(); }
+        get { return transform.position; }
         set
         {
             transform.position = value;
-            if(OnThisToken.IsValid()) OnThisToken.position = value + new Vector3(0,0.2f,0);
         }
+    }
+
+    public virtual void Update()
+    {
+        SetTokenData();
+        
+        //Debug용
+        Debug.Log(Managers.Object.Tokens.Count);
     }
 
     void Awake()
@@ -72,83 +55,109 @@ public class TokenController : BaseController
         SpriteRenderer = GetComponent<SpriteRenderer>();
         CircleCollider2D = GetComponent<CircleCollider2D>();
 
-        isMouseClicked = false;
+        IsMouseClicked = false;
 
-        OnProductTokenOrder = -1;
-        
         return true;
     }
-    
-    #region 마우스 처리로직(OnMouseClicked,OnMouseUnClicked)
-    
-    public void OnMouseClicked(int layer)
-    {
-        //첫 하나만 적용
-        if(layer == 0){
-            CircleCollider2D.isTrigger = false;
-            SetUnderThisToken(null);
-        }
-        
-        CircleCollider2D.isTrigger = true;
-        
-        SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum + layer;
-        
-        //위토큰세팅
-        if(OnThisToken.IsValid()) OnThisToken.OnMouseClicked(++layer);
-    }
 
-    public void OnMouseUnClicked(int layer)
+    #region 마우스 처리로직(IsMouseClicked)
+    
+    public bool IsMouseClicked
     {
-        //첫 하나만 적용
-        if(layer == 0){
-            CircleCollider2D.isTrigger = false;
+        get { return _isMouseClicked;}
+        set
+        {
+            _isMouseClicked = value;
+            UnderThisToken = null;
+            //TODO 생산토큰 없애줘야함
         }
-        
-        SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum + layer;
-        
-        //위토큰세팅
-        if(OnThisToken.IsValid()) OnThisToken.OnMouseUnClicked(++layer);
     }
     
     #endregion
 
     #region TokenDataSetting부분(OnThisToken,UnderThisToken)
     
-    /**
-     * @desc 나와 같지 않은 ObjectType이면 스킵
-     */
-    public void SetOnThisToken(TokenController token)
+    public TokenController OnThisToken
     {
-        //위에 아무 토큰도 없어질 경우 위 토큰 SetUnderThisToken(null)
-        if (!token.IsValid())
+        get => _onThisToken;
+        set
         {
-            if (OnThisToken.IsValid())
+            if (_onThisToken == value) return;
+            
+            //빈 토큰
+            if (!value.IsValid())
             {
-                OnThisToken.SetUnderThisToken(null);
+                if(OnThisToken.IsValid()) OnThisToken.UnderThisToken = null;
+                _onThisToken = null;
                 return;
             } 
+            
+            if (TokenType == value.TokenType)
+            {
+                _onThisToken = value;
+                OnThisToken.UnderThisToken = this;
+                return;
+            }
+            
         }
-        
-        //나와 같지 않은 ObjectType이면 스킵
-        if (ObjectType != token.ObjectType)
+    }
+    
+    public TokenController UnderThisToken
+    {
+        get => _underThisToken;
+        set
         {
-            Debug.Log("TokenContoller.SetOnThisToken : ObjectType체크 필요!!");
+            if (_underThisToken == value) return;
+            
+            //빈 토큰
+            if (!value.IsValid())
+            {
+                if (UnderThisToken.IsValid()) UnderThisToken.OnThisToken = null;
+                _underThisToken = null;
+                return;
+            } 
+            
+            if (TokenType == value.TokenType)
+            {
+                _underThisToken = value;
+                UnderThisToken.OnThisToken = this;
+                return;
+            }
+        }
+    }
+
+    public virtual void SetTokenData()
+    {
+        //아래 토큰이 있으면 
+        if (UnderThisToken.IsValid()){
+            CircleCollider2D.isTrigger = true;
+            SpriteRenderer.sortingOrder = UnderThisToken.SpriteRenderer.sortingOrder + 1;
+            Position = UnderThisToken.Position + new Vector3(0,0.2f,0);
             return;
         }
         
-        //위에 새로운 토큰이 왔을 때
-        OnThisToken = token;
-        OnThisToken.CircleCollider2D.isTrigger = true;
-        OnThisToken.position = transform.position + new Vector3(0,0.2f,0);
-        OnThisToken.SpriteRenderer.sortingOrder = SpriteRenderer.sortingOrder + 1;
-        OnThisToken.SetUnderThisToken(this);
+        //아래 토큰이 없고 마우스 클릭중이면 
+        if (IsMouseClicked)
+        {
+            CircleCollider2D.isTrigger = true;
+            SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum;
+            return;
+        }
+        
+        //TODO 아래 토큰이 없고 생산토큰 위면
+        if (IsMouseClicked)
+        {
+            CircleCollider2D.isTrigger = true;
+            SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum;
+            return;
+        }
+        
+        //아래 토큰이 없고 빈공간에 있으면
+        CircleCollider2D.isTrigger = false;
+        SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum;
+
     }
-    
-    public void SetUnderThisToken(TokenController token)
-    {
-        UnderThisToken = token;
-    }
-    
+   
     #endregion
 
     #region DataGet(GetHighestToken,GetLowestToken)
@@ -175,7 +184,7 @@ public class TokenController : BaseController
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        position = transform.position;
+        Position = transform.position;
     }
 
     #endregion

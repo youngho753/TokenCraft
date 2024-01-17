@@ -47,7 +47,7 @@ public class MouseController : MonoBehaviour
             if (!mouseDownToken.IsValid()) return;
 
             /** 2. _mouseTokenStack 세팅 */
-            mouseDownToken.isMouseClicked = true;
+            mouseDownToken.IsMouseClicked = true;
             _mouseToken = mouseDownToken;
 
         }
@@ -64,7 +64,7 @@ public class MouseController : MonoBehaviour
         
         /** 토큰 움직임 */
         if (_mouseToken is null ) return;
-        _mouseToken.position = _mousePosition;
+        _mouseToken.Position = _mousePosition;
     }
 
 
@@ -77,10 +77,10 @@ public class MouseController : MonoBehaviour
             TokenController mouseDownToken = GetMouseUpToken();
             
             /** mouseClickToken에 MouseUp 주기 */
-            _mouseToken.isMouseClicked = false;
+            _mouseToken.IsMouseClicked = false;
             
             /** 아래토큰에 클릭토큰주기 */
-            if(mouseDownToken.IsValid()) mouseDownToken.SetOnThisToken(_mouseToken);
+            if(mouseDownToken.IsValid()) mouseDownToken.OnThisToken = _mouseToken;
 
             /** ._mousetokenStack 세팅 */
             _mouseToken = null;
@@ -113,7 +113,7 @@ public class MouseController : MonoBehaviour
         TokenController tc = null;
         for (int i = 0; i < targets.Length; i++)
         {
-            if (Util.GetTokenController(targets[i].transform.gameObject).IsValid() && Util.GetTokenController(targets[i].transform.gameObject).isMouseClicked) 
+            if (Util.GetTokenController(targets[i].transform.gameObject).IsValid() && Util.GetTokenController(targets[i].transform.gameObject).IsMouseClicked) 
                 continue;
 
             return Util.GetTokenController(targets[i].transform.gameObject);

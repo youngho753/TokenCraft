@@ -14,13 +14,12 @@ public class ProductTokenController : TokenController
     public int blankZoneCnt = 2;
     public int inBlankZoneOrder = -1;
     
-    public override Vector3 position
+    public override Vector3 Position
     {
         get { return transform.position; }
         set
         {
-            transform.position = value;
-            if(OnThisToken != null) OnThisToken.position = value;
+            base.Position = value;
             
             //ProductToken전용
             for (int i = 0; i < BlankZoneList.Count; i++)
@@ -57,7 +56,7 @@ public class ProductTokenController : TokenController
         
         ProductOnTokenDic.Add(inBlankZoneOrder, token);
         
-        token.OnProductTokenOrder = inBlankZoneOrder;
+        // token.OnProductTokenOrder = inBlankZoneOrder;
     }
     
     public virtual void RemoveTokenStack(int order)

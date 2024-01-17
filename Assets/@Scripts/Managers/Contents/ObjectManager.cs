@@ -83,7 +83,7 @@ public class ObjectManager
        {
             GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
             MaterialTokenController cc = go.GetOrAddComponent<MaterialTokenController>();
-            cc.position = position;
+            cc.Position = position;
 
             tokenStack.Push(cc);
             
@@ -94,7 +94,7 @@ public class ObjectManager
        {
            GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
            NatureTokenController cc = go.GetOrAddComponent<NatureTokenController>();
-           cc.position = position;
+           cc.Position = position;
 
            tokenStack.Push(cc);
            Tokens.Add(cc);
