@@ -10,6 +10,8 @@ public class ProductTokenController : TokenController
 {
     public Dictionary<int, TokenController> ProductOnTokenDic;
     public List<BlankZoneController> BlankZoneList;
+    
+    private Coroutine _coProduction;
 
     
     //처음 Init할때의 BlankZone개수 엑셀에서 읽어와야함
@@ -37,9 +39,31 @@ public class ProductTokenController : TokenController
             BlankZoneList.Add(bzc);
             bzc.InProductToken = this;
         }
+
+        _coProduction = null;
         
         
         return true;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (ProductCheck())
+        {
+            if (_coProduction == null)
+            _coProduction = StartCoroutine(CoStartProduction()); 
+        }
+        else
+        {
+            if (_coProduction != null)
+            {
+                StopCoroutine(_coProduction);
+                _coProduction = null;
+            }
+            
+        }
     }
     
     public override Vector3 Position
@@ -59,6 +83,87 @@ public class ProductTokenController : TokenController
         }
     }
     
+    
+    
+    #region TokenDataSetting부분(OnThisToken,UnderThisToken,SetTokenData)
+    
+    public override TokenController OnThisToken
+    {
+        get => base.OnThisToken;
+        set
+        {
+            if (value.IsValid() && value.ObjectType == Define.ObjectType.MaterialToken)
+            {
+                AddToken(value);
+                return;
+            }
+
+            base.OnThisToken = value;
+        }
+    }
+    
+    #endregion
+
+    #region 생산토큰 전용로직
+
+    public bool ProductCheck()
+    {
+        bool isProduct = true;
+        for (int i = 0; i < blankZoneCnt; i++)
+        {
+            if (ProductOnTokenDic.TryGetValue(i, out TokenController tc) == false)
+            {
+                isProduct = false;
+                break;
+            }
+        }
+
+        return isProduct;
+    }
+    
+    public IEnumerator CoStartProduction()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(3f);
+
+            for (int i = 0; i < blankZoneCnt; i++)
+            {
+                if(ProductOnTokenDic.TryGetValue(i, out TokenController tc))
+                {
+                    tc.GetHighestToken().GetComponent<MaterialTokenController>().OnUsed();
+                }
+            }
+            MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), 0, "MaterialToken");
+            mtc.GetHighestToken().OnThisToken = Managers.Object.SpawnToken<MaterialTokenController>(
+                    Position - new Vector3(0, Random.Range(1f, 2f), 0), 0, "MaterialToken");
+            mtc.GetHighestToken().OnThisToken = Managers.Object.SpawnToken<MaterialTokenController>(
+                Position - new Vector3(0, Random.Range(1f, 2f), 0), 0, "MaterialToken");
+            //     nearToken.GetHighestToken().OnThisToken = mtc;
+
+            // MaterialTokenController nearToken = Util.GetNearestSameMaterialToken(Position, 100);
+
+            // if (nearToken.IsValid())
+            // {
+            //     MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), 0, "MaterialToken");
+            //     nearToken.GetHighestToken().OnThisToken = mtc;
+            // }
+            //
+            // //TODO 이 아래는 테스트용 나중에 없애야함 
+            // if (nearToken.IsValid())
+            // {
+            //     MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0, Random.Range(1f, 2f), 0), 0, "MaterialToken");
+            //     nearToken.GetHighestToken().OnThisToken = mtc;
+            // }
+            //
+            // if (nearToken.IsValid())
+            // {
+            //     MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), 0, "MaterialToken");
+            //     nearToken.GetHighestToken().OnThisToken = mtc;
+            // }
+        }
+    }
+
     public virtual void AddToken(TokenController token)
     {
         //BlankZone에 토큰이 없을경우
@@ -97,51 +202,14 @@ public class ProductTokenController : TokenController
     {
         if (inBlankZoneOrder == order) inBlankZoneOrder = -1;
     }
-    
-    #region TokenDataSetting부분(OnThisToken,UnderThisToken,SetTokenData)
-    
-    public override TokenController OnThisToken
-    {
-        get => base.OnThisToken;
-        set
-        {
-            if (value.IsValid() && value.ObjectType == Define.ObjectType.MaterialToken)
-            {
-                AddToken(value);
-                return;
-            }
 
-            base.OnThisToken = value;
-        }
-    }
-    
     #endregion
-
-
+    
     
 }
 
   
 
-    // public IEnumerator CoStartProduction()
-    // {
-    //     while (true)
-    //     {
-    //         List<TokenController> onTokenList = new List<TokenController>();
-    //         
-    //         foreach(BlankTokenController blankTokenController in TokenBackground.BlankTokenDic.Values)
-    //         {
-    //             onTokenList.Add(blankTokenController.onTokenStack.Peek());
-    //         }
-    //
-    //         foreach (TokenController tc in onTokenList)
-    //         {
-    //             tc.onUsed();
-    //         }
-    //         
-    //         yield return new WaitForSeconds(3f);
-    //         
-    //     }
-    // }
+   
     
    

@@ -130,6 +130,22 @@ public class ObjectManager
         {
             Tokens.Remove(obj as TokenController);
             Managers.Resource.Destroy(obj.gameObject);
+        }else if (type == typeof(MaterialTokenController))
+        {
+            Tokens.Remove(obj as MaterialTokenController);
+            Managers.Resource.Destroy(obj.gameObject);
+        }else if (type == typeof(NatureTokenController))
+        {
+            Tokens.Remove(obj as NatureTokenController);
+            Managers.Resource.Destroy(obj.gameObject);
+        }else if (type == typeof(FactoryTokenController))
+        {
+            Tokens.Remove(obj as FactoryTokenController);
+            Managers.Resource.Destroy(obj.gameObject);
+        }else if (type == typeof(BlankZoneController))
+        {
+            Managers.Resource.Destroy(obj.gameObject);
         }
+        
     }
 }

@@ -109,6 +109,15 @@ public class MaterialTokenController : TokenController
         base.SetTokenData();
         
     }
+
+    public void OnUsed()
+    {
+        UnderThisToken = null;
+        OnThisToken = null;
+        OnProductToken = null;
+        
+        Managers.Object.Despawn(this);
+    }
     
     #endregion
 

@@ -85,6 +85,34 @@ public static class Util
         }
         return result;
     }
+    
+    public static MaterialTokenController GetNearestSameMaterialToken(Vector3 pos, float scanRange)
+    {
+        MaterialTokenController result = null;
+        float dist = 100;
+        
+        RaycastHit2D[] _targets = Physics2D.CircleCastAll(pos, scanRange, Vector2.zero, 0, 6);
+
+        foreach (RaycastHit2D target in _targets)
+        {
+            MaterialTokenController mtc = target.transform.GetComponent<MaterialTokenController>();
+            if (mtc.IsValid())
+            {
+                // 생산토큰이 없어야함
+                if (!mtc.OnProductToken.IsValid())
+                {
+                    Vector3 targetPos = target.transform.position;
+                    float curDiff = Vector3.Distance(pos, targetPos);
+                    if (curDiff < dist)
+                    {
+                        dist = curDiff;
+                        result = mtc;
+                    }        
+                }
+            }
+        }
+        return result;
+    }
 
     public static List<Transform> GetFindMonstersInFanShape(Vector3 origin, Vector3 forward, float radius = 2,  float angleRange = 80 )
     {

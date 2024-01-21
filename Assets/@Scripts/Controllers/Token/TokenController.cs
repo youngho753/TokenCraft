@@ -55,6 +55,8 @@ public class TokenController : BaseController
         PrintDebug();
         Debug.Log(Managers.Object.Tokens.Count);
     }
+    
+    
 
     public virtual Vector3 Position
     {
