@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class TokenController : BaseController
 {
+    public int tokenOrder;
+    
     public Define.TokenType TokenType { get; protected set; }
     
     [SerializeField]
@@ -21,31 +23,15 @@ public class TokenController : BaseController
     private TokenController _underThisToken;
 
 
+
     public bool _isMouseClicked;
+    public bool _isMouseClickGroup;
     
-
-    public virtual Vector3 Position
-    {
-        get { return transform.position; }
-        set
-        {
-            transform.position = value;
-        }
-    }
-
-    public virtual void Update()
-    {
-        SetTokenData();
-        
-        //Debug용
-        Debug.Log(Managers.Object.Tokens.Count);
-    }
-
     void Awake()
     {
         Init();
     }
-
+    
     public override bool Init()
     {
         if (base.Init() == false) return false;
@@ -56,28 +42,59 @@ public class TokenController : BaseController
         CircleCollider2D = GetComponent<CircleCollider2D>();
 
         IsMouseClicked = false;
+        IsMouseClickGroup = false;
 
         return true;
     }
-
-    #region 마우스 처리로직(IsMouseClicked)
     
-    public bool IsMouseClicked
+    public virtual void Update()
+    {
+        SetTokenData();
+        
+        //Debug용
+        PrintDebug();
+        Debug.Log(Managers.Object.Tokens.Count);
+    }
+
+    public virtual Vector3 Position
+    {
+        get { return transform.position; }
+        set
+        {
+            transform.position = value;
+        }
+    }
+
+    #region 마우스 처리로직(IsMouseClicked, IsMouseClickGroup)
+    
+    public virtual bool IsMouseClicked
     {
         get { return _isMouseClicked;}
         set
         {
             _isMouseClicked = value;
-            UnderThisToken = null;
-            //TODO 생산토큰 없애줘야함
+            IsMouseClickGroup = value;
+
+            //클릭할때는 UnderToken은 항상 Null
+            if (value) UnderThisToken = null;
+        }
+    }
+    
+    public virtual bool IsMouseClickGroup
+    {
+        get { return _isMouseClickGroup;}
+        set
+        {
+            _isMouseClickGroup = value;
+            if(OnThisToken.IsValid()) OnThisToken.IsMouseClickGroup = value;
         }
     }
     
     #endregion
 
-    #region TokenDataSetting부분(OnThisToken,UnderThisToken)
+    #region TokenDataSetting부분(OnThisToken,UnderThisToken,SetTokenData)
     
-    public TokenController OnThisToken
+    public virtual TokenController OnThisToken
     {
         get => _onThisToken;
         set
@@ -87,7 +104,7 @@ public class TokenController : BaseController
             //빈 토큰
             if (!value.IsValid())
             {
-                if(OnThisToken.IsValid()) OnThisToken.UnderThisToken = null;
+                if(OnThisToken.IsValid()) OnThisToken._underThisToken = null;
                 _onThisToken = null;
                 return;
             } 
@@ -102,7 +119,7 @@ public class TokenController : BaseController
         }
     }
     
-    public TokenController UnderThisToken
+    public virtual TokenController UnderThisToken
     {
         get => _underThisToken;
         set
@@ -112,7 +129,7 @@ public class TokenController : BaseController
             //빈 토큰
             if (!value.IsValid())
             {
-                if (UnderThisToken.IsValid()) UnderThisToken.OnThisToken = null;
+                if (UnderThisToken.IsValid()) UnderThisToken._onThisToken = null;
                 _underThisToken = null;
                 return;
             } 
@@ -126,17 +143,11 @@ public class TokenController : BaseController
         }
     }
 
-    public virtual void SetTokenData()
+ 
+
+    protected virtual void SetTokenData()
     {
-        //아래 토큰이 있으면 
-        if (UnderThisToken.IsValid()){
-            CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = UnderThisToken.SpriteRenderer.sortingOrder + 1;
-            Position = UnderThisToken.Position + new Vector3(0,0.2f,0);
-            return;
-        }
-        
-        //아래 토큰이 없고 마우스 클릭중이면 
+        //마우스 클릭중이면 
         if (IsMouseClicked)
         {
             CircleCollider2D.isTrigger = true;
@@ -144,11 +155,11 @@ public class TokenController : BaseController
             return;
         }
         
-        //TODO 아래 토큰이 없고 생산토큰 위면
-        if (IsMouseClicked)
-        {
+        //아래 토큰이 있으면 
+        if (UnderThisToken.IsValid()){
             CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum;
+            SpriteRenderer.sortingOrder = UnderThisToken.SpriteRenderer.sortingOrder + 1;
+            Position = UnderThisToken.Position + new Vector3(0,0.2f,0);
             return;
         }
         
@@ -164,7 +175,7 @@ public class TokenController : BaseController
     
     public virtual TokenController GetHighestToken()
     {
-        if (OnThisToken != null && OnThisToken.enabled)
+        if (OnThisToken.IsValid())
             return OnThisToken.GetHighestToken();
         //else
             return this;
@@ -172,7 +183,7 @@ public class TokenController : BaseController
     
     public virtual TokenController GetLowestToken()
     {
-        if (UnderThisToken != null && UnderThisToken.enabled)
+        if (UnderThisToken.IsValid())
             return UnderThisToken.GetLowestToken();
         //else
             return this;
@@ -182,7 +193,7 @@ public class TokenController : BaseController
 
     #region 충돌이벤트(OnCollisionStay2D)
 
-    private void OnCollisionStay2D(Collision2D collision)
+    public virtual void OnCollisionStay2D(Collision2D collision)
     {
         Position = transform.position;
     }
@@ -203,4 +214,21 @@ public class TokenController : BaseController
     //     gameObject.SetActive(false);
     //         
     // }
+
+    public virtual void PrintDebug()
+    {
+        /** 위 토큰의 아래토큰과 현재토큰이 다를때 */
+        if (OnThisToken.IsValid() && OnThisToken.UnderThisToken.IsValid() && OnThisToken.UnderThisToken.tokenOrder != this.tokenOrder)
+        {
+            Debug.LogError("##### 위 토큰의 아래토큰("+OnThisToken.UnderThisToken.tokenOrder+")과 현재토큰("+tokenOrder+")이 다릅니다.");
+        }
+        
+        /** 아래 토큰의 위토큰과 현재토큰이 다를때 */
+        if (UnderThisToken.IsValid() && UnderThisToken.OnThisToken.tokenOrder != this.tokenOrder)
+        {
+            Debug.LogError("##### 아래 토큰의 위 토큰("+UnderThisToken.OnThisToken.tokenOrder+")과 현재("+tokenOrder+")이 다릅니다.");
+        }
+        
+        
+    }
 }

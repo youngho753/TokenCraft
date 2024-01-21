@@ -77,17 +77,15 @@ public class ObjectManager
         System.Type type = typeof(T);
         
         
-        Stack<TokenController> tokenStack = new Stack<TokenController>();
-
        if (type == typeof(MaterialTokenController))
        {
             GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
             MaterialTokenController cc = go.GetOrAddComponent<MaterialTokenController>();
             cc.Position = position;
 
-            tokenStack.Push(cc);
-            
             Tokens.Add(cc);
+
+            cc.tokenOrder = Tokens.Count;
 
             return cc as T;
        } else if (type == typeof(NatureTokenController))
@@ -96,8 +94,9 @@ public class ObjectManager
            NatureTokenController cc = go.GetOrAddComponent<NatureTokenController>();
            cc.Position = position;
 
-           tokenStack.Push(cc);
            Tokens.Add(cc);
+           
+           cc.tokenOrder = Tokens.Count;
            
            return cc as T;
        } 

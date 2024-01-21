@@ -46,9 +46,10 @@ public class MouseController : MonoBehaviour
             TokenController mouseDownToken = GetMouseDownToken();
             if (!mouseDownToken.IsValid()) return;
 
-            /** 2. _mouseTokenStack 세팅 */
-            mouseDownToken.IsMouseClicked = true;
+            /** 2. 클릭한토큰 데이터 세팅 */
             _mouseToken = mouseDownToken;
+            _mouseToken.IsMouseClicked = true;
+            
 
         }
     }
@@ -74,15 +75,14 @@ public class MouseController : MonoBehaviour
         {
             if (!_mouseToken.IsValid()) return;
 
+            /** MouseUp 토큰 찾기 */
             TokenController mouseDownToken = GetMouseUpToken();
-            
-            /** mouseClickToken에 MouseUp 주기 */
-            _mouseToken.IsMouseClicked = false;
             
             /** 아래토큰에 클릭토큰주기 */
             if(mouseDownToken.IsValid()) mouseDownToken.OnThisToken = _mouseToken;
 
-            /** ._mousetokenStack 세팅 */
+            /** 클릭한토큰 데이터세팅 */
+            _mouseToken.IsMouseClicked = false;
             _mouseToken = null;
 
         }
@@ -97,9 +97,9 @@ public class MouseController : MonoBehaviour
         
         for (int i = 0; i < targets.Length; i++)
         {
-            if (Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptBlankTokenContoller))
+            if (Util.GetTokenController(targets[i].transform.gameObject))
             {
-                return Util.GetTokenController(targets[i].transform.gameObject, Constants.ExceptBlankTokenContoller);
+                return Util.GetTokenController(targets[i].transform.gameObject);
             }
         }
         
@@ -110,13 +110,19 @@ public class MouseController : MonoBehaviour
     {
         RaycastHit2D[] targets = Physics2D.CircleCastAll(_mousePosition, 0.5f, Vector2.zero, 0);
 
-        TokenController tc = null;
         for (int i = 0; i < targets.Length; i++)
         {
-            if (Util.GetTokenController(targets[i].transform.gameObject).IsValid() && Util.GetTokenController(targets[i].transform.gameObject).IsMouseClicked) 
+            //BlankZone이면 ProductToken으로 return
+            if(targets[i].transform.gameObject.GetComponent<BlankZoneController>().IsValid())
+                return targets[i].transform.gameObject.GetComponent<BlankZoneController>().InProductToken;
+        
+            //Token이 아니거나 클릭중인 토큰이면 continue
+            if (!Util.GetTokenController(targets[i].transform.gameObject).IsValid() ||
+                Util.GetTokenController(targets[i].transform.gameObject).IsMouseClickGroup)
                 continue;
-
-            return Util.GetTokenController(targets[i].transform.gameObject);
+            
+            //클릭한 토큰의 가장 높은 토큰으로 return
+            return Util.GetTokenController(targets[i].transform.gameObject).GetHighestToken();
         }
         
         return null;

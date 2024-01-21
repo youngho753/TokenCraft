@@ -44,6 +44,7 @@ public class Define
         NatureToken,
         FactorialToken,
         EnemyToken,
+        BlankZone,
         Null,
     }
     
@@ -246,7 +247,7 @@ static class Constants
     public const double Pi = 3.141592f;
 
     public const int ExceptNothing = 0;
-    public const int ExceptBlankTokenContoller = 1;
+    public const int ExceptBlankZonecontroller = 1;
     public const int ExceptNatureTokencontroller = 2;
     public const int ExceptFactoryTokenContoller = 4;
     public const int ExceptMaterialTokenContoller = 8;

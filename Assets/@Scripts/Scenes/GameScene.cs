@@ -51,7 +51,7 @@ public class GameScene : BaseScene
         if (Input.GetKeyDown(KeyCode.F2))
         {
             TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
-            
+
         }else if (Input.GetKeyDown(KeyCode.F3))
         {
             // Stack<TokenController> tokenStack = new Stack<TokenController>();
