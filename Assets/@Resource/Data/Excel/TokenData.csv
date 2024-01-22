@@ -1,0 +1,11 @@
+"DataId	",PrefabName,KoreanName,EnglishName,Value,Icon
+100001,Wood_01,¸ñÀç,Wood,0,Wood_01
+100002,Branch_01,³ª¹µ°¡Áö,Branch,0,Branch_01_Icon
+100003,Mushroom_01,¹ö¼¸,Mushroom,0,Mushroom_01_Icon
+100004,Stone_01,µ¹,Stone,0,Stone_01_Icon
+100005,Coal_01,¼®Åº,Coal,0,Coal_01_Icon
+100006,IronStone_01,Ã¶±¤¼®,IronStone,2,IronStone_01_Icon
+100007,GoldStone_01,±Ý±¤¼®,GoldStone,3,GoldStone_01_Icon
+109001,Human_01,ÀÎ°£,Human,0,Human_01_Icon
+110001,Forest_01,½£,Forest,1,
+110002,Mine_01,±¤»ê,Mine,1,

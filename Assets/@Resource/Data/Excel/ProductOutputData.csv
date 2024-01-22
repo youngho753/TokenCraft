@@ -1,0 +1,4 @@
+DataId,ProductDataId,OutputId,Rate,Grade
+300001,200001,100001,0.7,Common
+300002,200001,100002,0.2,Common
+300003,200001,100003,0.1,Common

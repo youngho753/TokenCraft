@@ -27,7 +27,7 @@ public class GameScene : BaseScene
         _game = Managers.Game;
 
         //1. 맵 생성
-        // LoadStage();
+        LoadStage();
 
         //2. 플레이어 생성
         // Managers.Resource.Instantiate("player", null, false);
@@ -82,19 +82,7 @@ public class GameScene : BaseScene
 
     public void LoadStage()
     {
-        // if (_spawningPool == null)
-        //     _spawningPool = gameObject.AddComponent<SpawningPool>();
-        //
-        //
-        // Managers.Object.LoadMap(_game.CurrentStageData.MapName);
-        //
-        // _game.CurrentStageIndex = _game.CurrentStageData.StageIndex;
-        // _game.CurrentWaveIndex = 0;
-        //
-        // // 웨이브 정보 적용
-        // StopAllCoroutines();
-        // StartCoroutine(StartWave(_game.CurrentStageData.WaveArray[_game.CurrentWaveIndex]));
-
+        Managers.Object.LoadMap("MapDay");
     }
 
     void GameOver()

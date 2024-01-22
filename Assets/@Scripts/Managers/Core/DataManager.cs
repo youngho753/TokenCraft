@@ -13,7 +13,7 @@ public interface ILoader<Key, Value>
 
 public class DataManager
 {
-    // public Dictionary<int, Data.MaterialData> MaterialDic { get; private set; } = new Dictionary<int, Data.MaterialData>();
+    public Dictionary<int, Data.TokenData> TokenDic { get; private set; } = new Dictionary<int, Data.TokenData>();
     // public Dictionary<int, Data.SupportSkillData> SupportSkillDic { get; private set; } = new Dictionary<int, Data.SupportSkillData>();
     // public Dictionary<int, Data.StageData> StageDic { get; private set; } = new Dictionary<int, Data.StageData>();
     // public Dictionary<int, Data.SkillData> SkillDic { get; private set; } = new Dictionary<int, Data.SkillData>();
@@ -23,7 +23,7 @@ public class DataManager
     
     public void Init()
     {
-        // MaterialDic = LoadJson<Data.MaterialDataLoader, int, Data.MaterialData>("MaterialData").MakeDict();
+        TokenDic = LoadJson<Data.TokenDataLoader, int, Data.TokenData>("TokenData").MakeDict();
         // SupportSkillDic = LoadJson<Data.SupportSkillDataLoader, int, Data.SupportSkillData>("SupportSkillData").MakeDict();
         // StageDic = LoadJson<Data.StageDataLoader, int, Data.StageData>("StageData").MakeDict();
         // SkillDic = LoadJson<Data.SkillDataLoader, int, Data.SkillData>("SkillData").MakeDict();

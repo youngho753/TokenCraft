@@ -31,15 +31,7 @@ public class GameData
 }
 public class GameManager
 {
-    #region TokenControl
-    public TokenController OnClickToken
-    {
-        get { return _gameData.OnClickToken; }
-        set { _gameData.OnClickToken = value; }
-    }
-    
-    #endregion
-    
+
     #region GameData
     public GameData _gameData = new GameData();
     public GameData SaveData
@@ -61,12 +53,6 @@ public class GameManager
     
     public CameraController CameraController { get; set; }
 
-    #region CurrentStage, Map
-    public StageData CurrentStageData { get; set; }
-    public WaveData CurrentWaveData { get; set; }
-    #endregion
-    
-    
     #region Mouse
     
     public MouseController Mouse { get; set; }

@@ -61,15 +61,14 @@ public class ObjectManager
     {
 
     }
-
-    public string TestMapId = "Map_01";
+    
     public void LoadMap(string mapName)
     {
-        GameObject objMap = Managers.Resource.Instantiate(TestMapId);
+        GameObject objMap = Managers.Resource.Instantiate(mapName);
         objMap.transform.position = Vector3.zero;
         objMap.name = "@Map";
 
-        // objMap.GetComponent<Map>().Init();
+        objMap.GetComponent<Map>().Init();
     }
 
     public T SpawnToken<T>(Vector3 position, int templateID = 0, string prefabName = "") where T : TokenController
