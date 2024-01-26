@@ -116,27 +116,5 @@ namespace Data
     }
     #endregion
 
-    #region LevelData
-    [Serializable]
-    public class EquipmentLevelData
-    {
-        public int Level;
-        public int UpgradCost;
-        public int UpgradeRequiredItems;
-    }
-
-    [Serializable]
-    public class EquipmentLevelDataLoader : ILoader<int, EquipmentLevelData>
-    {
-        public List<EquipmentLevelData> levels = new List<EquipmentLevelData>();
-        public Dictionary<int, EquipmentLevelData> MakeDict()
-        {
-            Dictionary<int, EquipmentLevelData> dict = new Dictionary<int, EquipmentLevelData>();
-            foreach (EquipmentLevelData levelData in levels)
-                dict.Add(levelData.Level, levelData);
-            return dict;
-        }
-    }
-    #endregion
 
 }
