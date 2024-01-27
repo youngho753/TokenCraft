@@ -17,6 +17,23 @@ using UnityEngine.Analytics;
 
 public class DataTransformer : EditorWindow
 {
+#if UNITY_EDITOR
+    [MenuItem("Tools/DeleteGameData ")]
+    public static void DeleteGameData()
+    {
+        PlayerPrefs.DeleteAll();
+        string path = Application.persistentDataPath + "/SaveData.json";
+        if (File.Exists(path))
+            File.Delete(path);
+    }
+    
+    [MenuItem("Tools/ParseExcel %#K")]
+    public static void ParseExcel()
+    {
+        ParseTokenData("Token");
+        Debug.Log("Complete DataTransformer");
+    }
+    
     static void ParseTokenData(string filename)
     {
         TokenDataLoader loader = new TokenDataLoader();
@@ -35,21 +52,17 @@ public class DataTransformer : EditorWindow
 
             int i = 0;
             TokenData td = new TokenData();
+            td.DataId = ConvertValue<int>(row[i++]);
+            td.PrefabId = ConvertValue<string>(row[i++]);
+            td.KoreanName = ConvertValue<string>(row[i++]);
+            td.EnglishName = ConvertValue<string>(row[i++]);
             td.Value = ConvertValue<int>(row[i++]);
-            aps.AccountLevel = ConvertValue<int>(row[i++]);
-            aps.FreeRewardItemId = ConvertValue<int>(row[i++]);
-            aps.FreeRewardItemValue = ConvertValue<int>(row[i++]);
-            aps.RareRewardItemId = ConvertValue<int>(row[i++]);
-            aps.RareRewardItemValue = ConvertValue<int>(row[i++]);
-            aps.EpicRewardItemId = ConvertValue<int>(row[i++]);
-            aps.EpicRewardItemValue = ConvertValue<int>(row[i++]);
-
-
-            loader.accounts.Add(aps);
+            td.Icon = ConvertValue<string>(row[i++]);
+    
+            loader.tokens.Add(td);
         }
 
         #endregion
-
         string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
         File.WriteAllText($"{Application.dataPath}/@Resources/Data/JsonData/{filename}Data.json", jsonStr);
         AssetDatabase.Refresh();

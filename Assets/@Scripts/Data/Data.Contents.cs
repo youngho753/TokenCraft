@@ -13,7 +13,7 @@ namespace Data
         public string PrefabId;
         public string KoreanName;
         public string EnglishName;
-        public string Value;
+        public int Value;
         public string Icon;
     }
 

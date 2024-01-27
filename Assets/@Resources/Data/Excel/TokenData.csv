@@ -7,5 +7,5 @@
 100006,IronStone_01,√∂±§ºÆ,IronStone,2,IronStone_01_Icon
 100007,GoldStone_01,±›±§ºÆ,GoldStone,3,GoldStone_01_Icon
 109001,Human_01,¿Œ∞£,Human,0,Human_01_Icon
-110001,Forest_01,Ω£,Forest,1,
-110002,Mine_01,±§ªÍ,Mine,1,
+110001,Forest_01,Ω£,Forest,1,Human_01_Icon
+110002,Mine_01,±§ªÍ,Mine,1,Human_01_Icon
