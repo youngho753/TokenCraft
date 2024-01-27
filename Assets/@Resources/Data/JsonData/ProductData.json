@@ -1,0 +1,53 @@
+{
+  "products": [
+    {
+      "DataId": 200001,
+      "MakerId": 110001,
+      "InputList": [
+        109001
+      ],
+      "MakeId": 220001
+    },
+    {
+      "DataId": 200002,
+      "MakerId": 110001,
+      "InputList": [
+        109001,
+        100001
+      ],
+      "MakeId": 220002
+    },
+    {
+      "DataId": 200003,
+      "MakerId": 110001,
+      "InputList": [
+        109001
+      ],
+      "MakeId": 220003
+    },
+    {
+      "DataId": 200004,
+      "MakerId": 110002,
+      "InputList": [
+        109001
+      ],
+      "MakeId": 220004
+    },
+    {
+      "DataId": 200005,
+      "MakerId": 110002,
+      "InputList": [
+        109001
+      ],
+      "MakeId": 220005
+    },
+    {
+      "DataId": 200006,
+      "MakerId": 110002,
+      "InputList": [
+        109001
+      ],
+      "MakeId": 220006
+    }
+  ]
+}

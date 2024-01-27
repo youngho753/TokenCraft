@@ -1,11 +1,11 @@
 "DataId	",PrefabName,KoreanName,EnglishName,Value,Icon
-100001,Wood_01,∏Ò¿Á,Wood,0,Wood_01
-100002,Branch_01,≥™πµ∞°¡ˆ,Branch,0,Branch_01_Icon
-100003,Mushroom_01,πˆº∏,Mushroom,0,Mushroom_01_Icon
-100004,Stone_01,µπ,Stone,0,Stone_01_Icon
-100005,Coal_01,ºÆ≈∫,Coal,0,Coal_01_Icon
-100006,IronStone_01,√∂±§ºÆ,IronStone,2,IronStone_01_Icon
-100007,GoldStone_01,±›±§ºÆ,GoldStone,3,GoldStone_01_Icon
-109001,Human_01,¿Œ∞£,Human,0,Human_01_Icon
-110001,Forest_01,Ω£,Forest,1,Human_01_Icon
-110002,Mine_01,±§ªÍ,Mine,1,Human_01_Icon
+100001,Wood_01,Î™©Ïû¨,Wood,0,Wood_01
+100002,Branch_01,ÎÇòÎ≠áÍ∞ÄÏßÄ,Branch,0,Branch_01_Icon
+100003,Mushroom_01,Î≤ÑÏÑØ,Mushroom,0,Mushroom_01_Icon
+100004,Stone_01,Îèå,Stone,0,Stone_01_Icon
+100005,Coal_01,ÏÑùÌÉÑ,Coal,0,Coal_01_Icon
+100006,IronStone_01,Ï≤†Í¥ëÏÑù,IronStone,2,IronStone_01_Icon
+100007,GoldStone_01,Í∏àÍ¥ëÏÑù,GoldStone,3,GoldStone_01_Icon
+109001,Human_01,Ïù∏Í∞Ñ,Human,0,Human_01_Icon
+110001,Forest_01,Ïà≤,Forest,1,Human_01_Icon
+110002,Mine_01,Í¥ëÏÇ∞,Mine,1,Human_01_Icon

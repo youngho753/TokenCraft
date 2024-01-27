@@ -50,7 +50,7 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
+            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 110001, "MaterialToken");
 
         }else if (Input.GetKeyDown(KeyCode.F3))
         {
@@ -82,7 +82,7 @@ public class GameScene : BaseScene
 
     public void LoadStage()
     {
-        Managers.Object.LoadMap("MapDay");
+        // Managers.Object.LoadMap("MapDay");
     }
 
     void GameOver()

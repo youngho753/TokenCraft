@@ -3,7 +3,7 @@
     {
       "DataId": 100001,
       "PrefabId": "Wood_01",
-      "KoreanName": "����",
+      "KoreanName": "목재",
       "EnglishName": "Wood",
       "Value": 0,
       "Icon": "Wood_01"
@@ -11,7 +11,7 @@
     {
       "DataId": 100002,
       "PrefabId": "Branch_01",
-      "KoreanName": "��������",
+      "KoreanName": "나뭇가지",
       "EnglishName": "Branch",
       "Value": 0,
       "Icon": "Branch_01_Icon"
@@ -19,7 +19,7 @@
     {
       "DataId": 100003,
       "PrefabId": "Mushroom_01",
-      "KoreanName": "����",
+      "KoreanName": "버섯",
       "EnglishName": "Mushroom",
       "Value": 0,
       "Icon": "Mushroom_01_Icon"
@@ -27,7 +27,7 @@
     {
       "DataId": 100004,
       "PrefabId": "Stone_01",
-      "KoreanName": "��",
+      "KoreanName": "돌",
       "EnglishName": "Stone",
       "Value": 0,
       "Icon": "Stone_01_Icon"
@@ -35,7 +35,7 @@
     {
       "DataId": 100005,
       "PrefabId": "Coal_01",
-      "KoreanName": "��ź",
+      "KoreanName": "석탄",
       "EnglishName": "Coal",
       "Value": 0,
       "Icon": "Coal_01_Icon"
@@ -43,7 +43,7 @@
     {
       "DataId": 100006,
       "PrefabId": "IronStone_01",
-      "KoreanName": "ö����",
+      "KoreanName": "철광석",
       "EnglishName": "IronStone",
       "Value": 2,
       "Icon": "IronStone_01_Icon"
@@ -51,7 +51,7 @@
     {
       "DataId": 100007,
       "PrefabId": "GoldStone_01",
-      "KoreanName": "�ݱ���",
+      "KoreanName": "금광석",
       "EnglishName": "GoldStone",
       "Value": 3,
       "Icon": "GoldStone_01_Icon"
@@ -59,7 +59,7 @@
     {
       "DataId": 109001,
       "PrefabId": "Human_01",
-      "KoreanName": "�ΰ�",
+      "KoreanName": "인간",
       "EnglishName": "Human",
       "Value": 0,
       "Icon": "Human_01_Icon"
@@ -67,7 +67,7 @@
     {
       "DataId": 110001,
       "PrefabId": "Forest_01",
-      "KoreanName": "��",
+      "KoreanName": "숲",
       "EnglishName": "Forest",
       "Value": 1,
       "Icon": "Human_01_Icon"
@@ -75,7 +75,7 @@
     {
       "DataId": 110002,
       "PrefabId": "Mine_01",
-      "KoreanName": "����",
+      "KoreanName": "광산",
       "EnglishName": "Mine",
       "Value": 1,
       "Icon": "Human_01_Icon"

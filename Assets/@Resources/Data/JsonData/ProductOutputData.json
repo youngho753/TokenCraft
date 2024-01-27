@@ -1,0 +1,44 @@
+{
+  "ProductTable": [
+    {
+      "MakeId": 210001,
+      "ProductOutputRateTable": [
+        {
+          "Output": 100001,
+          "Rate": 0.7,
+          "IsBaseItem": false
+        },
+        {
+          "Output": 100002,
+          "Rate": 0.2,
+          "IsBaseItem": false
+        },
+        {
+          "Output": 100003,
+          "Rate": 0.1,
+          "IsBaseItem": false
+        }
+      ]
+    },
+    {
+      "MakeId": 210002,
+      "ProductOutputRateTable": [
+        {
+          "Output": 100004,
+          "Rate": 0.7,
+          "IsBaseItem": false
+        },
+        {
+          "Output": 100005,
+          "Rate": 0.2,
+          "IsBaseItem": false
+        },
+        {
+          "Output": 100006,
+          "Rate": 0.1,
+          "IsBaseItem": false
+        }
+      ]
+    }
+  ]
+}

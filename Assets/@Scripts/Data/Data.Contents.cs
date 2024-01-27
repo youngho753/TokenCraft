@@ -42,7 +42,7 @@ namespace Data
     }
 
     [Serializable]
-    public class ProductLoader : ILoader<int, ProductData>
+    public class ProductDataLoader : ILoader<int, ProductData>
     {
         public List<ProductData> products = new List<ProductData>();
         public Dictionary<int, ProductData> MakeDict()
@@ -64,7 +64,7 @@ namespace Data
     }
     
     [Serializable]
-    public class ProductOutputLoader : ILoader<int, ProductOutputTableData>
+    public class ProductOutputDataLoader : ILoader<int, ProductOutputTableData>
     {
         public List<ProductOutputTableData> ProductTable = new List<ProductOutputTableData>();
         public Dictionary<int, ProductOutputTableData> MakeDict()
@@ -82,7 +82,7 @@ namespace Data
 
     public class ProductOutputRateData
     {
-        public List<int> OutputList;
+        public int Output;
         public float Rate;
         public bool IsBaseItem;
     }
