@@ -55,7 +55,7 @@ public class DataTransformer : EditorWindow
             int i = 0;
             TokenData td = new TokenData();
             td.DataId = ConvertValue<int>(row[i++]);
-            td.PrefabId = ConvertValue<string>(row[i++]);
+            td.PrefabName = ConvertValue<string>(row[i++]);
             td.KoreanName = ConvertValue<string>(row[i++]);
             td.EnglishName = ConvertValue<string>(row[i++]);
             td.Value = ConvertValue<int>(row[i++]);
@@ -91,6 +91,7 @@ public class DataTransformer : EditorWindow
             td.DataId = ConvertValue<int>(row[i++]);
             td.MakerId = ConvertValue<int>(row[i++]);
             td.InputList = ConvertList<int>(row[i++]);
+            td.MakeOrder = ConvertValue<int>(row[i++]);
             td.MakeId = ConvertValue<int>(row[i++]);
     
             loader.products.Add(td);

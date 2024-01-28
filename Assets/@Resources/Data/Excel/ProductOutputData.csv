@@ -1,4 +1,4 @@
-MakeId,OutputList,Rate,IsBaseItem
+MakeId,Output,Rate,IsBaseItem
 210001,100001,0.7,TRUE
 210001,100002,0.2,FALSE
 210001,100003,0.1,FALSE

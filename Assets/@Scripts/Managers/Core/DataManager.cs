@@ -14,22 +14,14 @@ public interface ILoader<Key, Value>
 public class DataManager
 {
     public Dictionary<int, Data.TokenData> TokenDic { get; private set; } = new Dictionary<int, Data.TokenData>();
-    // public Dictionary<int, Data.SupportSkillData> SupportSkillDic { get; private set; } = new Dictionary<int, Data.SupportSkillData>();
-    // public Dictionary<int, Data.StageData> StageDic { get; private set; } = new Dictionary<int, Data.StageData>();
-    // public Dictionary<int, Data.SkillData> SkillDic { get; private set; } = new Dictionary<int, Data.SkillData>();
-    // public Dictionary<int, Data.LevelData> LevelDataDic { get; private set; } = new Dictionary<int, Data.LevelData>();
-    // public Dictionary<string, Data.EquipmentData> EquipDataDic { get; private set; } = new Dictionary<string, Data.EquipmentData>();
-    // public Dictionary<int, Data.EquipmentLevelData> EquipLevelDataDic { get; private set; } = new Dictionary<int, Data.EquipmentLevelData>();
+    public Dictionary<int, Data.ProductData> ProductDic { get; private set; } = new Dictionary<int, Data.ProductData>();
+    public Dictionary<int, Data.ProductOutputTableData> ProductOutputTableDic { get; private set; } = new Dictionary<int, Data.ProductOutputTableData>();
     
     public void Init()
     {
         TokenDic = LoadJson<Data.TokenDataLoader, int, Data.TokenData>("TokenData").MakeDict();
-        // SupportSkillDic = LoadJson<Data.SupportSkillDataLoader, int, Data.SupportSkillData>("SupportSkillData").MakeDict();
-        // StageDic = LoadJson<Data.StageDataLoader, int, Data.StageData>("StageData").MakeDict();
-        // SkillDic = LoadJson<Data.SkillDataLoader, int, Data.SkillData>("SkillData").MakeDict();
-        // LevelDataDic = LoadJson<Data.LevelDataLoader, int, Data.LevelData>("LevelData").MakeDict();
-        // EquipDataDic = LoadJson<Data.EquipmentDataLoader, string, Data.EquipmentData>("EquipmentData").MakeDict();
-        // EquipLevelDataDic = LoadJson<Data.EquipmentLevelDataLoader, int, Data.EquipmentLevelData>("EquipmentLevelData").MakeDict();
+        ProductDic = LoadJson<Data.ProductDataLoader, int, Data.ProductData>("ProductData").MakeDict();
+        ProductOutputTableDic = LoadJson<Data.ProductOutputDataLoader, int, Data.ProductOutputTableData>("ProductOutputData").MakeDict();
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using DG.Tweening;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
@@ -18,11 +19,17 @@ public class TokenController : BaseController
     public Rigidbody2D RigidBody { get; set; }
     public CircleCollider2D CircleCollider2D { get; set; }
     protected Animator Anim;
+    public TokenData TokenData;
 
     private TokenController _onThisToken;
     private TokenController _underThisToken;
 
-
+    public virtual int DataId { get; set; }
+    public virtual string PrefabName { get; set; }
+    public virtual string KoreanName { get; set; }
+    public virtual string EnglishName { get; set; }
+    public virtual int Value { get; set; }
+    public virtual string Icon { get; set; }
 
     public bool _isMouseClicked;
     public bool _isMouseClickGroup;
@@ -53,7 +60,16 @@ public class TokenController : BaseController
         
         //Debug용
         PrintDebug();
-        Debug.Log(Managers.Object.Tokens.Count);
+    }
+
+    public virtual void SetInfo(int tokenId)
+    {
+        DataId = tokenId;
+        Dictionary<int, Data.TokenData> dict = Managers.Data.TokenDic;
+        TokenData = dict[tokenId];
+        KoreanName = TokenData.KoreanName;
+        EnglishName = TokenData.EnglishName;
+        Value = TokenData.Value;
     }
     
     

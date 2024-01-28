@@ -2,7 +2,7 @@
   "tokens": [
     {
       "DataId": 100001,
-      "PrefabId": "Wood_01",
+      "PrefabName": "Wood_01",
       "KoreanName": "목재",
       "EnglishName": "Wood",
       "Value": 0,
@@ -10,7 +10,7 @@
     },
     {
       "DataId": 100002,
-      "PrefabId": "Branch_01",
+      "PrefabName": "Branch_01",
       "KoreanName": "나뭇가지",
       "EnglishName": "Branch",
       "Value": 0,
@@ -18,7 +18,7 @@
     },
     {
       "DataId": 100003,
-      "PrefabId": "Mushroom_01",
+      "PrefabName": "Mushroom_01",
       "KoreanName": "버섯",
       "EnglishName": "Mushroom",
       "Value": 0,
@@ -26,7 +26,7 @@
     },
     {
       "DataId": 100004,
-      "PrefabId": "Stone_01",
+      "PrefabName": "Stone_01",
       "KoreanName": "돌",
       "EnglishName": "Stone",
       "Value": 0,
@@ -34,7 +34,7 @@
     },
     {
       "DataId": 100005,
-      "PrefabId": "Coal_01",
+      "PrefabName": "Coal_01",
       "KoreanName": "석탄",
       "EnglishName": "Coal",
       "Value": 0,
@@ -42,7 +42,7 @@
     },
     {
       "DataId": 100006,
-      "PrefabId": "IronStone_01",
+      "PrefabName": "IronStone_01",
       "KoreanName": "철광석",
       "EnglishName": "IronStone",
       "Value": 2,
@@ -50,7 +50,7 @@
     },
     {
       "DataId": 100007,
-      "PrefabId": "GoldStone_01",
+      "PrefabName": "GoldStone_01",
       "KoreanName": "금광석",
       "EnglishName": "GoldStone",
       "Value": 3,
@@ -58,7 +58,7 @@
     },
     {
       "DataId": 109001,
-      "PrefabId": "Human_01",
+      "PrefabName": "Human_01",
       "KoreanName": "인간",
       "EnglishName": "Human",
       "Value": 0,
@@ -66,7 +66,7 @@
     },
     {
       "DataId": 110001,
-      "PrefabId": "Forest_01",
+      "PrefabName": "Forest_01",
       "KoreanName": "숲",
       "EnglishName": "Forest",
       "Value": 1,
@@ -74,7 +74,7 @@
     },
     {
       "DataId": 110002,
-      "PrefabId": "Mine_01",
+      "PrefabName": "Mine_01",
       "KoreanName": "광산",
       "EnglishName": "Mine",
       "Value": 1,

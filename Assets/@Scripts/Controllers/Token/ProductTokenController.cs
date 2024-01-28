@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Data;
 using DG.Tweening;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
@@ -13,6 +15,39 @@ public class ProductTokenController : TokenController
     
     private Coroutine _coProduction;
 
+    public List<ProductData> ProductDataList;
+    public ProductOutputTableData ProductOutputTableData;
+
+    private int makeId; 
+    // {
+    //     "DataId": 200002,
+    //     "MakerId": 110001,
+    //     "InputList": [
+    //     109001,
+    //     100001
+    //         ],
+    //     "MakeId": 220002
+    // },
+    //
+    // {
+    //     "MakeId": 210002,
+    //     "ProductOutputRateTable": [
+    //     {
+    //         "Output": 100004,
+    //         "Rate": 0.7,
+    //         "IsBaseItem": false
+    //     },
+    //     {
+    //         "Output": 100005,
+    //         "Rate": 0.2,
+    //         "IsBaseItem": false
+    //     },
+    //     {
+    //         "Output": 100006,
+    //         "Rate": 0.1,
+    //         "IsBaseItem": false
+    //     }
+    
     
     //처음 Init할때의 BlankZone개수 엑셀에서 읽어와야함
     public int startBlankZoneCnt = 2;
@@ -26,6 +61,8 @@ public class ProductTokenController : TokenController
     public override bool Init()
     {
         if (base.Init() == false) return false;
+
+        
         
         ProductOnTokenDic = new Dictionary<int, TokenController>();
 
@@ -65,7 +102,22 @@ public class ProductTokenController : TokenController
             
         }
     }
+
+    public override void SetInfo(int tokenId)
+    {
+        base.SetInfo(tokenId);
+
+        // ProductList에서 Maker가 자신인 데이터를 모두 찾기.
+        ProductDataList = Managers.Data.ProductDic.Where(w => w.Value.MakerId == TokenData.DataId).Select(s => s.Value)
+            .ToList();
+        
+        // foreach(ProductData productData in Managers.Data.ProductDic.Where(w=>w.Value.MakerId == TokenData.DataId).Select(s=>s.Value))
+        // {
+        //     ProductDataList.Add(productData);
+        // }
+    }
     
+
     public override Vector3 Position
     {
         get { return transform.position; }
@@ -108,15 +160,20 @@ public class ProductTokenController : TokenController
 
     public bool ProductCheck()
     {
-        bool isProduct = true;
-        for (int i = 0; i < blankZoneCnt; i++)
+        bool isProduct = false;
+
+        //올려져 있는 토큰Id List화
+        List<int> onTokenDatas = new List<int>();
+        for (int i = 0; i < ProductOnTokenDic.Count; i++)
         {
-            if (ProductOnTokenDic.TryGetValue(i, out TokenController tc) == false)
-            {
-                isProduct = false;
-                break;
-            }
+            onTokenDatas.Add(ProductOnTokenDic[0].TokenData.DataId);
         }
+
+        //만들 수 있는 makeId중 가장 순서가 높은 makeID 추출
+        //InputList가 없는 데이터는 0, 0보다 크면 추출한것
+        makeId = ProductDataList.Where(w => Util.isEqual(w.InputList, onTokenDatas)).OrderByDescending(o => o.MakeOrder).First().MakeId;
+
+        if (makeId > 0) isProduct = true;
 
         return isProduct;
     }
@@ -126,42 +183,41 @@ public class ProductTokenController : TokenController
         while (true)
         {
             yield return new WaitForSeconds(3f);
+            
 
-            for (int i = 0; i < blankZoneCnt; i++)
-            {
-                if(ProductOnTokenDic.TryGetValue(i, out TokenController tc))
-                {
-                    tc.GetHighestToken().GetComponent<MaterialTokenController>().OnUsed();
-                }
-            }
-            MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), 0, "MaterialToken");
-            mtc.GetHighestToken().OnThisToken = Managers.Object.SpawnToken<MaterialTokenController>(
-                    Position - new Vector3(0, Random.Range(1f, 2f), 0), 0, "MaterialToken");
-            mtc.GetHighestToken().OnThisToken = Managers.Object.SpawnToken<MaterialTokenController>(
-                Position - new Vector3(0, Random.Range(1f, 2f), 0), 0, "MaterialToken");
-            //     nearToken.GetHighestToken().OnThisToken = mtc;
-
-            // MaterialTokenController nearToken = Util.GetNearestSameMaterialToken(Position, 100);
-
-            // if (nearToken.IsValid())
+            // for (int i = 0; i < blankZoneCnt; i++)
             // {
-            //     MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), 0, "MaterialToken");
-            //     nearToken.GetHighestToken().OnThisToken = mtc;
+            //     if(ProductOnTokenDic.TryGetValue(i, out TokenController tc))
+            //     {
+            //         tc.GetHighestToken().GetComponent<MaterialTokenController>().OnUsed();
+            //     }
             // }
-            //
-            // //TODO 이 아래는 테스트용 나중에 없애야함 
-            // if (nearToken.IsValid())
-            // {
-            //     MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0, Random.Range(1f, 2f), 0), 0, "MaterialToken");
-            //     nearToken.GetHighestToken().OnThisToken = mtc;
-            // }
-            //
-            // if (nearToken.IsValid())
-            // {
-            //     MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), 0, "MaterialToken");
-            //     nearToken.GetHighestToken().OnThisToken = mtc;
-            // }
+            
+            MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), makeId, "MaterialToken");    
         }
+    }
+    
+    public static int GetRandomToken(int makeId)
+    {
+        float randomValue = UnityEngine.Random.value;
+        if (randomValue < prob[(int)EquipmentGrade.Common])
+        {
+            return EquipmentGrade.Common;
+        }
+        else if (randomValue < prob[(int)EquipmentGrade.Common] + prob[(int)EquipmentGrade.Uncommon])
+        {
+            return EquipmentGrade.Uncommon;
+        }
+        else if (randomValue < prob[(int)EquipmentGrade.Common] + prob[(int)EquipmentGrade.Uncommon] + prob[(int)EquipmentGrade.Rare])
+        {
+            return EquipmentGrade.Rare;
+        }
+        else if (randomValue < prob[(int)EquipmentGrade.Common] + prob[(int)EquipmentGrade.Uncommon] + prob[(int)EquipmentGrade.Rare] + prob[(int)EquipmentGrade.Epic])
+        {
+            return EquipmentGrade.Epic;
+        }
+
+        return EquipmentGrade.Common;
     }
 
     public virtual void AddToken(TokenController token)

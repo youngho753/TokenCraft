@@ -10,7 +10,7 @@ namespace Data
     public class TokenData
     {
         public int DataId;
-        public string PrefabId;
+        public string PrefabName;
         public string KoreanName;
         public string EnglishName;
         public int Value;
@@ -38,6 +38,7 @@ namespace Data
         public int DataId;
         public int MakerId;
         public List<int> InputList;
+        public int MakeOrder;
         public int MakeId;
     }
 

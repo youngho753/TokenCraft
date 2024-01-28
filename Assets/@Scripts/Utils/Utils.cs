@@ -55,6 +55,15 @@ public static class Util
 
         return null;
     }
+    
+    public static bool isEqual(List<int> list1, List<int> list2) {
+        foreach (var n in list1) {
+            if (!list2.Contains(n)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static Vector2 RandomPointInAnnulus(Vector2 origin, float minRadius = 6, float maxRadius = 12)
     {

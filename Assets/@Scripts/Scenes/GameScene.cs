@@ -50,7 +50,7 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 110001, "MaterialToken");
+            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 100001, "MaterialToken");
 
         }else if (Input.GetKeyDown(KeyCode.F3))
         {
@@ -73,7 +73,7 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            TokenController _tc = Managers.Object.SpawnToken<NatureTokenController>(Managers.Game.Mouse._mousePosition, 0, "ProductToken");
+            TokenController _tc = Managers.Object.SpawnToken<NatureTokenController>(Managers.Game.Mouse._mousePosition, 110001, "ProductToken");
         }
         
         if (isGameEnd == true)

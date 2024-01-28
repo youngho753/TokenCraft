@@ -78,9 +78,10 @@ public class ObjectManager
         
        if (type == typeof(MaterialTokenController))
        {
-            GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+            GameObject go = Managers.Resource.Instantiate(Managers.Data.TokenDic[templateID].PrefabName, pooling: true);
             MaterialTokenController cc = go.GetOrAddComponent<MaterialTokenController>();
             cc.Position = position;
+            cc.SetInfo(templateID);
 
             Tokens.Add(cc);
 
@@ -89,9 +90,10 @@ public class ObjectManager
             return cc as T;
        } else if (type == typeof(NatureTokenController))
        {
-           GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+           GameObject go = Managers.Resource.Instantiate(Managers.Data.TokenDic[templateID].PrefabName, pooling: true);
            NatureTokenController cc = go.GetOrAddComponent<NatureTokenController>();
            cc.Position = position;
+           cc.SetInfo(templateID);
 
            Tokens.Add(cc);
            
