@@ -58,21 +58,22 @@ namespace Data
 
     #region ProductOutputData
 
-    public class ProductOutputTableData
+    [Serializable]
+    public class ProductOutputData
     {
         public int MakeId;
         public List<ProductOutputRateData> ProductOutputRateTable = new List<ProductOutputRateData>();
     }
     
     [Serializable]
-    public class ProductOutputDataLoader : ILoader<int, ProductOutputTableData>
+    public class ProductOutputDataLoader : ILoader<int, ProductOutputData>
     {
-        public List<ProductOutputTableData> ProductTable = new List<ProductOutputTableData>();
-        public Dictionary<int, ProductOutputTableData> MakeDict()
+        public List<ProductOutputData> productOutputs = new List<ProductOutputData>();
+        public Dictionary<int, ProductOutputData> MakeDict()
         {
-            Dictionary<int, ProductOutputTableData> dict = new Dictionary<int, ProductOutputTableData>();
-            foreach (ProductOutputTableData product in ProductTable)
-                dict.Add(product.MakeId, product);
+            Dictionary<int, ProductOutputData> dict = new Dictionary<int, ProductOutputData>();
+            foreach (ProductOutputData productOutput in productOutputs)
+                dict.Add(productOutput.MakeId, productOutput);
             return dict;
         }
     }
@@ -81,6 +82,7 @@ namespace Data
 
     #region ProductOutputRateData
 
+    [Serializable]
     public class ProductOutputRateData
     {
         public int Output;

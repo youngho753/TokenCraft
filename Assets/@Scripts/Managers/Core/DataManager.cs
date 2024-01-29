@@ -15,13 +15,13 @@ public class DataManager
 {
     public Dictionary<int, Data.TokenData> TokenDic { get; private set; } = new Dictionary<int, Data.TokenData>();
     public Dictionary<int, Data.ProductData> ProductDic { get; private set; } = new Dictionary<int, Data.ProductData>();
-    public Dictionary<int, Data.ProductOutputTableData> ProductOutputTableDic { get; private set; } = new Dictionary<int, Data.ProductOutputTableData>();
+    public Dictionary<int, Data.ProductOutputData> ProductOutputTableDic { get; private set; } = new Dictionary<int, Data.ProductOutputData>();
     
     public void Init()
     {
         TokenDic = LoadJson<Data.TokenDataLoader, int, Data.TokenData>("TokenData").MakeDict();
         ProductDic = LoadJson<Data.ProductDataLoader, int, Data.ProductData>("ProductData").MakeDict();
-        ProductOutputTableDic = LoadJson<Data.ProductOutputDataLoader, int, Data.ProductOutputTableData>("ProductOutputData").MakeDict();
+        ProductOutputTableDic = LoadJson<Data.ProductOutputDataLoader, int, Data.ProductOutputData>("ProductOutputData").MakeDict();
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

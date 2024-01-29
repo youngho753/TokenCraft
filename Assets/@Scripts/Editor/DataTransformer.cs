@@ -112,14 +112,14 @@ public class DataTransformer : EditorWindow
         
         foreach(int key in productOutputTable.Keys)
         {
-            ProductOutputTableData productOutputData = new ProductOutputTableData()
+            ProductOutputData productOutputData = new ProductOutputData()
             {
                 MakeId = key
             };
             if (productOutputTable.TryGetValue(productOutputData.MakeId, out List<ProductOutputRateData> productOutputRate))
                 productOutputData.ProductOutputRateTable.AddRange(productOutputRate);
 
-            loader.ProductTable.Add(productOutputData);
+            loader.productOutputs.Add(productOutputData);
         }
 
         #endregion

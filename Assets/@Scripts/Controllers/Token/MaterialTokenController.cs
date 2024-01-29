@@ -67,10 +67,8 @@ public class MaterialTokenController : TokenController
             {
                 if (OnProductToken.IsValid())
                 {
-                    Debug.Log("ProductToken수" + OnProductToken.ProductOnTokenDic.Count);
                     OnProductToken.BlankZoneList[_onProductOrder].onToken = false;
                     OnProductToken.ProductOnTokenDic.Remove(_onProductOrder);
-                    Debug.Log("ProductToken수" + OnProductToken.ProductOnTokenDic.Count);
                 }
                 _onProductToken = null;
                 return;

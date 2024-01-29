@@ -16,7 +16,7 @@ public class ProductTokenController : TokenController
     private Coroutine _coProduction;
 
     public List<ProductData> ProductDataList;
-    public ProductOutputTableData ProductOutputTableData;
+    // public Produ ProductOutputTableData;
 
     private int makeId; 
     // {
@@ -199,25 +199,20 @@ public class ProductTokenController : TokenController
     
     public static int GetRandomToken(int makeId)
     {
-        float randomValue = UnityEngine.Random.value;
-        if (randomValue < prob[(int)EquipmentGrade.Common])
-        {
-            return EquipmentGrade.Common;
-        }
-        else if (randomValue < prob[(int)EquipmentGrade.Common] + prob[(int)EquipmentGrade.Uncommon])
-        {
-            return EquipmentGrade.Uncommon;
-        }
-        else if (randomValue < prob[(int)EquipmentGrade.Common] + prob[(int)EquipmentGrade.Uncommon] + prob[(int)EquipmentGrade.Rare])
-        {
-            return EquipmentGrade.Rare;
-        }
-        else if (randomValue < prob[(int)EquipmentGrade.Common] + prob[(int)EquipmentGrade.Uncommon] + prob[(int)EquipmentGrade.Rare] + prob[(int)EquipmentGrade.Epic])
-        {
-            return EquipmentGrade.Epic;
-        }
+        
+        
+        // {
+        //     
+        // }
+        // float randomValue = UnityEngine.Random.value;
+        //
+        
+        
+        
+        
 
-        return EquipmentGrade.Common;
+        // return EquipmentGrade.Common;
+        return 0;
     }
 
     public virtual void AddToken(TokenController token)
