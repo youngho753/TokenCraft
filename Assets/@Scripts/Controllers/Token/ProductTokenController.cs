@@ -16,38 +16,9 @@ public class ProductTokenController : TokenController
     private Coroutine _coProduction;
 
     public List<ProductData> ProductDataList;
-    // public Produ ProductOutputTableData;
+    private List<ProductOutputRateData> ProductOutputRateTableList;
 
     private int makeId; 
-    // {
-    //     "DataId": 200002,
-    //     "MakerId": 110001,
-    //     "InputList": [
-    //     109001,
-    //     100001
-    //         ],
-    //     "MakeId": 220002
-    // },
-    //
-    // {
-    //     "MakeId": 210002,
-    //     "ProductOutputRateTable": [
-    //     {
-    //         "Output": 100004,
-    //         "Rate": 0.7,
-    //         "IsBaseItem": false
-    //     },
-    //     {
-    //         "Output": 100005,
-    //         "Rate": 0.2,
-    //         "IsBaseItem": false
-    //     },
-    //     {
-    //         "Output": 100006,
-    //         "Rate": 0.1,
-    //         "IsBaseItem": false
-    //     }
-    
     
     //처음 Init할때의 BlankZone개수 엑셀에서 읽어와야함
     public int startBlankZoneCnt = 2;
@@ -164,15 +135,21 @@ public class ProductTokenController : TokenController
 
         //올려져 있는 토큰Id List화
         List<int> onTokenDatas = new List<int>();
-        for (int i = 0; i < ProductOnTokenDic.Count; i++)
+        
+        foreach (int key in ProductOnTokenDic.Keys)
         {
-            onTokenDatas.Add(ProductOnTokenDic[0].TokenData.DataId);
+            onTokenDatas.Add(ProductOnTokenDic.GetValueOrDefault(key,null).TokenData.DataId);
         }
 
         //만들 수 있는 makeId중 가장 순서가 높은 makeID 추출
         //InputList가 없는 데이터는 0, 0보다 크면 추출한것
         makeId = ProductDataList.Where(w => Util.isEqual(w.InputList, onTokenDatas)).OrderByDescending(o => o.MakeOrder).First().MakeId;
 
+        if (makeId <= 0) return isProduct;
+    
+        ProductOutputRateTableList = Managers.Data.ProductOutputTableDic.Where(w => w.Key.Equals(makeId))
+            .Select(s => s.Value.ProductOutputRateTable).First();
+            
         if (makeId > 0) isProduct = true;
 
         return isProduct;
@@ -183,17 +160,35 @@ public class ProductTokenController : TokenController
         while (true)
         {
             yield return new WaitForSeconds(3f);
-            
 
-            // for (int i = 0; i < blankZoneCnt; i++)
-            // {
-            //     if(ProductOnTokenDic.TryGetValue(i, out TokenController tc))
-            //     {
-            //         tc.GetHighestToken().GetComponent<MaterialTokenController>().OnUsed();
-            //     }
-            // }
+            List<int> willProductOutputs = new List<int>();
+            int baseOutput = 0;
+            for (int i = 0; i < ProductOutputRateTableList.Count; i++)
+            {
+                
+                float random = UnityEngine.Random.value;
+                
+                // baseItem Setting
+                if (ProductOutputRateTableList[i].IsBaseItem) baseOutput = i; 
+                
+                //확률성공
+                if (ProductOutputRateTableList[i].Rate < random)
+                {
+                    willProductOutputs.Add(ProductOutputRateTableList[i].Output);
+                }
+            }
+
+            // 모두실패 -> BaseItem 생성
+            if (willProductOutputs.Count == 0)
+            {
+                willProductOutputs.Add(ProductOutputRateTableList[baseOutput].Output);                      
+            }
             
-            MaterialTokenController mtc = Managers.Object.SpawnToken<MaterialTokenController>(Position - new Vector3(0,Random.Range(1f,2f),0), makeId, "MaterialToken");    
+            //생성
+            foreach (int i in willProductOutputs)
+            {
+                Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, i, "MaterialToken");
+            }
         }
     }
     
