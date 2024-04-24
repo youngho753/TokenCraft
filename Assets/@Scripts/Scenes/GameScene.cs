@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Diagnostics;
@@ -50,10 +51,12 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 100001, "MaterialToken");
+            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 100001, "MaterialToken",true);
 
         }else if (Input.GetKeyDown(KeyCode.F3))
         {
+            TokenController _tc = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 100000, "MaterialToken",true);
+            
             // Stack<TokenController> tokenStack = new Stack<TokenController>();
             //
             // TokenController lowestToken = Managers.Object.SpawnToken<MaterialTokenController>(Managers.Game.Mouse._mousePosition, 0, "MaterialToken");
@@ -73,7 +76,7 @@ public class GameScene : BaseScene
         
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            TokenController _tc = Managers.Object.SpawnToken<NatureTokenController>(Managers.Game.Mouse._mousePosition, 110001, "ProductToken");
+            FactoryProductController _pc = Managers.Object.SpawnProduct<FactoryProductController>(Managers.Game.Mouse._mousePosition, 200001, "FactoryProduct",true);
         }
         
         if (isGameEnd == true)

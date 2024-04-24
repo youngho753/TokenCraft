@@ -1,11 +1,12 @@
-"DataId	",PrefabName,KoreanName,EnglishName,Value,Icon
-100001,Wood_01,ëª©ì¬,Wood,0,Wood_01
-100002,Branch_01,ë‚˜ë­‡ê°€ì§€,Branch,0,Branch_01_Icon
-100003,Mushroom_01,ë²„ì„¯,Mushroom,0,Mushroom_01_Icon
-100004,Stone_01,ëŒ,Stone,0,Stone_01_Icon
-100005,Coal_01,ì„íƒ„,Coal,0,Coal_01_Icon
-100006,IronStone_01,ì² ê´‘ì„,IronStone,2,IronStone_01_Icon
-100007,GoldStone_01,ê¸ˆê´‘ì„,GoldStone,3,GoldStone_01_Icon
-109001,Human_01,ì¸ê°„,Human,0,Human_01_Icon
-110001,Forest_01,ìˆ²,Forest,1,Human_01_Icon
-110002,Mine_01,ê´‘ì‚°,Mine,1,Human_01_Icon
+"DataId	",PrefabName,SpriteName,KoreanName,EnglishName,Value,Icon
+100000,MaterialToken,Coin.sprite,ÄÚÀÎ,Coin,0,Coin
+100001,MaterialToken,Wood.sprite,¸ñÀç,Wood,0,WoodToken
+100002,Branch_01,1,³ª¹µ°¡Áö,Branch,0,Branch_01_Icon
+100003,Mushroom_01,1,¹ö¼¸,Mushroom,0,Mushroom_01_Icon
+100004,Stone_01,1,µ¹,Stone,0,Stone_01_Icon
+100005,Coal_01,1,¼®Åº,Coal,0,Coal_01_Icon
+100006,IronStone_01,1,Ã¶±¤¼®,IronStone,2,IronStone_01_Icon
+100007,GoldStone_01,1,±İ±¤¼®,GoldStone,3,GoldStone_01_Icon
+109001,Human_01,1,ÀÎ°£,Human,0,Human_01_Icon
+110001,Forest_01,1,½£,Forest,1,Human_01_Icon
+110002,Mine_01,1,±¤»ê,Mine,1,Human_01_Icon

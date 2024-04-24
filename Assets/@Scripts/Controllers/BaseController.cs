@@ -7,7 +7,7 @@ public class BaseController : MonoBehaviour
 {
     public ObjectType ObjectType { get; protected set; }
 
-    bool _init = false;
+    protected bool _init = false;
 
     void Awake()
     {

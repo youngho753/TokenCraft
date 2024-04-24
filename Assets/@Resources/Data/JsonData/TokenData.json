@@ -1,17 +1,28 @@
 {
   "tokens": [
     {
+      "DataId": 100000,
+      "PrefabName": "MaterialToken",
+      "SpriteName": "Coin.sprite",
+      "KoreanName": "����",
+      "EnglishName": "Coin",
+      "Value": 0,
+      "Icon": "Coin"
+    },
+    {
       "DataId": 100001,
-      "PrefabName": "Wood_01",
-      "KoreanName": "목재",
+      "PrefabName": "MaterialToken",
+      "SpriteName": "Wood.sprite",
+      "KoreanName": "����",
       "EnglishName": "Wood",
       "Value": 0,
-      "Icon": "Wood_01"
+      "Icon": "WoodToken"
     },
     {
       "DataId": 100002,
       "PrefabName": "Branch_01",
-      "KoreanName": "나뭇가지",
+      "SpriteName": "1",
+      "KoreanName": "��������",
       "EnglishName": "Branch",
       "Value": 0,
       "Icon": "Branch_01_Icon"
@@ -19,7 +30,8 @@
     {
       "DataId": 100003,
       "PrefabName": "Mushroom_01",
-      "KoreanName": "버섯",
+      "SpriteName": "1",
+      "KoreanName": "����",
       "EnglishName": "Mushroom",
       "Value": 0,
       "Icon": "Mushroom_01_Icon"
@@ -27,7 +39,8 @@
     {
       "DataId": 100004,
       "PrefabName": "Stone_01",
-      "KoreanName": "돌",
+      "SpriteName": "1",
+      "KoreanName": "��",
       "EnglishName": "Stone",
       "Value": 0,
       "Icon": "Stone_01_Icon"
@@ -35,7 +48,8 @@
     {
       "DataId": 100005,
       "PrefabName": "Coal_01",
-      "KoreanName": "석탄",
+      "SpriteName": "1",
+      "KoreanName": "��ź",
       "EnglishName": "Coal",
       "Value": 0,
       "Icon": "Coal_01_Icon"
@@ -43,7 +57,8 @@
     {
       "DataId": 100006,
       "PrefabName": "IronStone_01",
-      "KoreanName": "철광석",
+      "SpriteName": "1",
+      "KoreanName": "ö����",
       "EnglishName": "IronStone",
       "Value": 2,
       "Icon": "IronStone_01_Icon"
@@ -51,7 +66,8 @@
     {
       "DataId": 100007,
       "PrefabName": "GoldStone_01",
-      "KoreanName": "금광석",
+      "SpriteName": "1",
+      "KoreanName": "�ݱ���",
       "EnglishName": "GoldStone",
       "Value": 3,
       "Icon": "GoldStone_01_Icon"
@@ -59,7 +75,8 @@
     {
       "DataId": 109001,
       "PrefabName": "Human_01",
-      "KoreanName": "인간",
+      "SpriteName": "1",
+      "KoreanName": "�ΰ�",
       "EnglishName": "Human",
       "Value": 0,
       "Icon": "Human_01_Icon"
@@ -67,7 +84,8 @@
     {
       "DataId": 110001,
       "PrefabName": "Forest_01",
-      "KoreanName": "숲",
+      "SpriteName": "1",
+      "KoreanName": "��",
       "EnglishName": "Forest",
       "Value": 1,
       "Icon": "Human_01_Icon"
@@ -75,7 +93,8 @@
     {
       "DataId": 110002,
       "PrefabName": "Mine_01",
-      "KoreanName": "광산",
+      "SpriteName": "1",
+      "KoreanName": "����",
       "EnglishName": "Mine",
       "Value": 1,
       "Icon": "Human_01_Icon"

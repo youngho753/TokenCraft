@@ -9,8 +9,8 @@ using UnityEngine;
 public class ObjectManager
 {
     public HashSet<TokenController> Tokens { get; } = new HashSet<TokenController>();
-    public HashSet<BlankZoneController> BlankZoneControllers { get; } = new HashSet<BlankZoneController>();
-    
+    public HashSet<ProductController> Products { get; } = new HashSet<ProductController>();
+
     public Transform SkillTransform
     {
         get
@@ -71,16 +71,21 @@ public class ObjectManager
         objMap.GetComponent<Map>().Init();
     }
 
-    public T SpawnToken<T>(Vector3 position, int templateID = 0, string prefabName = "") where T : TokenController
+    public T SpawnToken<T>(Vector3 position, int templateID = 0, string prefabName = "", bool isRandomSpawn = false) where T : TokenController
     {
         System.Type type = typeof(T);
         
+        if (isRandomSpawn)
+        {
+            position = new Vector3(Util.GetRandomFloatValue(-6.5f, 6.5f), Util.GetRandomFloatValue(-2.5f, 4f), 0);
+        }
         
        if (type == typeof(MaterialTokenController))
        {
             GameObject go = Managers.Resource.Instantiate(Managers.Data.TokenDic[templateID].PrefabName, pooling: true);
             MaterialTokenController cc = go.GetOrAddComponent<MaterialTokenController>();
-            cc.Position = position;
+            if (isRandomSpawn) cc.FloatValue = 5f;
+            cc.Position = position + new Vector3(0, cc.FloatValue, 0);;
             cc.SetInfo(templateID);
 
             Tokens.Add(cc);
@@ -88,19 +93,56 @@ public class ObjectManager
             cc.tokenOrder = Tokens.Count;
 
             return cc as T;
-       } else if (type == typeof(NatureTokenController))
-       {
-           GameObject go = Managers.Resource.Instantiate(Managers.Data.TokenDic[templateID].PrefabName, pooling: true);
-           NatureTokenController cc = go.GetOrAddComponent<NatureTokenController>();
-           cc.Position = position;
-           cc.SetInfo(templateID);
-
-           Tokens.Add(cc);
-           
-           cc.tokenOrder = Tokens.Count;
-           
-           return cc as T;
+       // } else if (type == typeof(NatureTokenController))
+       // {
+       //     GameObject go = Managers.Resource.Instantiate(Managers.Data.TokenDic[templateID].PrefabName, pooling: true);
+       //     NatureTokenController cc = go.GetOrAddComponent<NatureTokenController>();
+       //     cc.Position = position;
+       //     cc.SetInfo(templateID);
+       //
+       //     Tokens.Add(cc);
+       //     
+       //     cc.tokenOrder = Tokens.Count;
+       //     
+       //     return cc as T;
        } 
+       
+        return null;
+    }
+    
+    public T SpawnProduct<T>(Vector3 position, int templateID = 0, string prefabName = "", bool isRandomSpawn = false) where T : ProductController
+    {
+        System.Type type = typeof(T);
+        
+        if (isRandomSpawn)
+        {
+            position = new Vector3(Util.GetRandomFloatValue(-6.5f, 6.5f), Util.GetRandomFloatValue(-2.5f, 4f), 0);
+        }
+        
+        if (type == typeof(FactoryProductController))
+        {
+            GameObject go = Managers.Resource.Instantiate(Managers.Data.ProductDic[templateID].PrefabName, pooling: true);
+            FactoryProductController fpc = go.GetOrAddComponent<FactoryProductController>();
+            if (isRandomSpawn) fpc.FloatValue = 5f;
+            fpc.Position = position + new Vector3(0, fpc.FloatValue, 0);
+            fpc.SetInfo(templateID);
+
+            Products.Add(fpc);
+
+            return fpc as T;
+            // } else if (type == typeof(NatureTokenController))
+            // {
+            //     GameObject go = Managers.Resource.Instantiate(Managers.Data.TokenDic[templateID].PrefabName, pooling: true);
+            //     NatureTokenController cc = go.GetOrAddComponent<NatureTokenController>();
+            //     cc.Position = position;
+            //     cc.SetInfo(templateID);
+            //
+            //     Tokens.Add(cc);
+            //     
+            //     cc.tokenOrder = Tokens.Count;
+            //     
+            //     return cc as T;
+        } 
        
         return null;
     }
@@ -109,16 +151,16 @@ public class ObjectManager
     {
         System.Type type = typeof(T);
         
-        if (type == typeof(BlankZoneController))
-        {
-            GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
-            BlankZoneController bzc = go.GetOrAddComponent<BlankZoneController>();
-            go.transform.position = position;
-
-            BlankZoneControllers.Add(bzc);
-           
-            return bzc as T;
-        }
+        // if (type == typeof(BlankZoneController))
+        // {
+        //     GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+        //     BlankZoneController bzc = go.GetOrAddComponent<BlankZoneController>();
+        //     go.transform.position = position;
+        //
+        //     BlankZoneControllers.Add(bzc);
+        //    
+        //     return bzc as T;
+        // }
 
         return null;
     }
@@ -127,26 +169,21 @@ public class ObjectManager
     {
         System.Type type = typeof(T);
 
-        if (type == typeof(TokenController))
+        if (type == typeof(MaterialTokenController))
         {
-            Tokens.Remove(obj as TokenController);
+            Tokens.Remove(obj as MaterialTokenController);
             Managers.Resource.Destroy(obj.gameObject);
         }else if (type == typeof(MaterialTokenController))
         {
             Tokens.Remove(obj as MaterialTokenController);
             Managers.Resource.Destroy(obj.gameObject);
-        }else if (type == typeof(NatureTokenController))
-        {
-            Tokens.Remove(obj as NatureTokenController);
+        }else if (type == typeof(NatureProductController))
+            
+            Products.Remove(obj as NatureProductController);
             Managers.Resource.Destroy(obj.gameObject);
-        }else if (type == typeof(FactoryTokenController))
-        {
-            Tokens.Remove(obj as FactoryTokenController);
-            Managers.Resource.Destroy(obj.gameObject);
-        }else if (type == typeof(BlankZoneController))
-        {
-            Managers.Resource.Destroy(obj.gameObject);
-        }
-        
+        // }else if (type == typeof(FactoryTokenController))
+        // {
+        //     Tokens.Remove(obj as FactoryTokenController);
+        //     Managers.Resource.Destroy(obj.gameObject);
     }
 }

@@ -3,13 +3,19 @@
     {
       "DataId": 200001,
       "MakerId": 110001,
-      "InputList": [],
-      "MakeOrder": 0,
-      "MakeId": 0
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
+      "InputList": [
+        100001
+      ],
+      "MakeOrder": 1,
+      "MakeId": 210001
     },
     {
       "DataId": 200002,
       "MakerId": 110001,
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
       "InputList": [
         109001
       ],
@@ -19,6 +25,8 @@
     {
       "DataId": 200003,
       "MakerId": 110001,
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
       "InputList": [
         100001
       ],
@@ -28,6 +36,8 @@
     {
       "DataId": 200004,
       "MakerId": 110001,
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
       "InputList": [
         109001
       ],
@@ -37,13 +47,19 @@
     {
       "DataId": 200005,
       "MakerId": 110002,
-      "InputList": [],
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
+      "InputList": [
+        109001
+      ],
       "MakeOrder": 0,
       "MakeId": 0
     },
     {
       "DataId": 200006,
       "MakerId": 110002,
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
       "InputList": [
         109001
       ],
@@ -53,6 +69,8 @@
     {
       "DataId": 200007,
       "MakerId": 110002,
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
       "InputList": [
         109001
       ],
@@ -62,6 +80,8 @@
     {
       "DataId": 200008,
       "MakerId": 110002,
+      "SpriteName": "blastFurnace.sprite",
+      "PrefabName": "FactoryProduct",
       "InputList": [
         109001
       ],

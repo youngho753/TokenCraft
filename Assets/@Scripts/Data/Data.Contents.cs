@@ -11,6 +11,7 @@ namespace Data
     {
         public int DataId;
         public string PrefabName;
+        public string SpriteName;
         public string KoreanName;
         public string EnglishName;
         public int Value;
@@ -37,6 +38,8 @@ namespace Data
     {
         public int DataId;
         public int MakerId;
+        public String PrefabName;
+        public String SpriteName;
         public List<int> InputList;
         public int MakeOrder;
         public int MakeId;

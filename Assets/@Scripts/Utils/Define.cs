@@ -41,19 +41,23 @@ public class Define
     public enum ObjectType
     {
         MaterialToken,
-        NatureToken,
-        FactorialToken,
         EnemyToken,
-        BlankZone,
+        FactoryProduct,
+        NatureProduct,
         Null,
     }
     
     public enum TokenType
     {
         MaterialToken,
-        NatureToken,
-        FactorialToken,
         EnemyToken,
+        Null,
+    }
+    
+    public enum ProductType
+    {
+        FactoryProduct,
+        NatureProduct,
         Null,
     }
     
@@ -241,6 +245,7 @@ public class Define
 }
 static class Constants
 {
+    public const int FloatTokenLayerNum = 1100;
     public const int StartTokenLayerNum = 1000;
     public const int StartMouseTokenLayerNum = 1050;
     public const int MaxStackTokenNum = 30;
@@ -252,6 +257,12 @@ static class Constants
     public const int ExceptFactoryTokenContoller = 4;
     public const int ExceptMaterialTokenContoller = 8;
 
+    public const int SKY_DROP_COIN = 1;
+    public const int PRODUCTION_PRODUCT_COIN = 2;
+
+    public const int TOKEN_IDLE = 1;
+    public const int TOKEN_DROP_DOWN = 2;
+    public const int TOKEN_COIN_INPUT = 3;
 }
 
 // public static class EquipmentUIColors

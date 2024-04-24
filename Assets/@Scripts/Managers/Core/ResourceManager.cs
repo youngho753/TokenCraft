@@ -20,7 +20,8 @@ public class ResourceManager
             if (typeof(T) == typeof(Sprite))
             {
                 Texture2D tex = resource as Texture2D;
-                Sprite spr = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+                // Sprite spr = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+                Sprite spr = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height),  new Vector2(0.5f,0.5f));
                 return spr as T;
             }
             return resource as T;

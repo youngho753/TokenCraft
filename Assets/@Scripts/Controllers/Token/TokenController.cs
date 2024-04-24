@@ -14,11 +14,9 @@ public class TokenController : BaseController
     
     public Define.TokenType TokenType { get; protected set; }
     
-    [SerializeField]
     public SpriteRenderer SpriteRenderer;
     public Rigidbody2D RigidBody { get; set; }
     public CircleCollider2D CircleCollider2D { get; set; }
-    protected Animator Anim;
     public TokenData TokenData;
 
     private TokenController _onThisToken;
@@ -30,11 +28,19 @@ public class TokenController : BaseController
     public virtual string EnglishName { get; set; }
     public virtual int Value { get; set; }
     public virtual string Icon { get; set; }
+    
+    public virtual float _floatValue { get; set; }   //공중에 떠 있는 수치
 
+    public int _state;
+    
     public bool _isMouseClicked;
     public bool _isMouseClickGroup;
     
-    void Awake()
+    //그림자
+    public GameObject ShadowObject;
+    public ShadowController ShadowController;
+
+    void OnEnable()
     {
         Init();
     }
@@ -44,22 +50,49 @@ public class TokenController : BaseController
         if (base.Init() == false) return false;
 
         RigidBody = GetComponent<Rigidbody2D>();
-        Anim = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
         CircleCollider2D = GetComponent<CircleCollider2D>();
-
+        
+        CircleCollider2D.enabled = true;
+        
+        //Shadow 자식 생성
+        if(ShadowObject == null) ShadowObject = Managers.Resource.Instantiate("TokenShadow", pooling: false);
+        ShadowController = ShadowObject.GetOrAddComponent<ShadowController>(); 
+        ShadowController.SetInfo(this.SpriteRenderer);
+        ShadowObject.transform.SetParent(transform);
+        ShadowObject.SetActive(true);
+        
+        
         IsMouseClicked = false;
         IsMouseClickGroup = false;
+        
+        _state = Constants.TOKEN_IDLE;
+
+        DropToken();
 
         return true;
     }
     
-    public virtual void Update()
+    public virtual void FixedUpdate()
     {
         SetTokenData();
+    }
+
+    public virtual void clear()
+    {
+        base._init = false;
+        FloatValue = 0;
+        _state = Constants.TOKEN_IDLE;
+        IsMouseClicked = false;
+        IsMouseClickGroup = false;
+        OnThisToken = null;
+        UnderThisToken = null;
         
-        //Debug용
-        PrintDebug();
+        CircleCollider2D.enabled = false;
+        
+        SpriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+        
+        Managers.Resource.Destroy(gameObject);
     }
 
     public virtual void SetInfo(int tokenId)
@@ -67,12 +100,40 @@ public class TokenController : BaseController
         DataId = tokenId;
         Dictionary<int, Data.TokenData> dict = Managers.Data.TokenDic;
         TokenData = dict[tokenId];
+        // SpriteName = ;
         KoreanName = TokenData.KoreanName;
         EnglishName = TokenData.EnglishName;
         Value = TokenData.Value;
+        
+        Sprite sprite = Managers.Resource.Load<Sprite>($"{TokenData.SpriteName}");
+        SpriteRenderer.sprite = sprite;
+    }
+
+    #region Deligater
+    
+    public virtual int State
+    {
+        get { return _state; }
+        set
+        {
+            _state = value;
+        }
     }
     
-    
+    public virtual float FloatValue
+    {
+        get { return _floatValue; }
+        set
+        {
+            float beForeFloatValue = _floatValue; 
+            _floatValue = value;
+            Position = Position + new Vector3(0,value - beForeFloatValue,0);
+
+            ShadowController._parentFloatValue = value;
+
+
+        }
+    }
 
     public virtual Vector3 Position
     {
@@ -82,6 +143,19 @@ public class TokenController : BaseController
             transform.position = value;
         }
     }
+    
+    public virtual int SortingOrder
+    {
+        get { return this.SpriteRenderer.sortingOrder; }
+        set
+        {
+            this.SpriteRenderer.sortingOrder = value;
+            this.ShadowController.SpriteRenderer.sortingOrder = value - 10;
+        }
+    }
+    
+    #endregion
+
 
     #region 마우스 처리로직(IsMouseClicked, IsMouseClickGroup)
     
@@ -94,7 +168,15 @@ public class TokenController : BaseController
             IsMouseClickGroup = value;
 
             //클릭할때는 UnderToken은 항상 Null
-            if (value) UnderThisToken = null;
+            if (value)
+            {
+                UnderThisToken = null;
+                FloatValue = 0.2f;
+            }
+            else
+            {
+                FloatValue = 0f;
+            }
         }
     }
     
@@ -103,6 +185,7 @@ public class TokenController : BaseController
         get { return _isMouseClickGroup;}
         set
         {
+            // DOTween.Kill("DropCoin"); //떨어지는 이펙트 안나오게
             _isMouseClickGroup = value;
             if(OnThisToken.IsValid()) OnThisToken.IsMouseClickGroup = value;
         }
@@ -169,21 +252,43 @@ public class TokenController : BaseController
         if (IsMouseClicked)
         {
             CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum;
+            SortingOrder = Constants.StartMouseTokenLayerNum;
             return;
         }
         
         //아래 토큰이 있으면 
         if (UnderThisToken.IsValid()){
             CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = UnderThisToken.SpriteRenderer.sortingOrder + 1;
-            Position = UnderThisToken.Position + new Vector3(0,0.2f,0);
+            SortingOrder = UnderThisToken.SpriteRenderer.sortingOrder + 1;
+            // Position = UnderThisToken.Position + new Vector3(0,0.2f,0);
+
+            transform.DOMove(UnderThisToken.Position + new Vector3(0, 0.2f, 0), 0.01f);
+
+            Position = Position;
+            
+            return;
+        }
+
+        //공중에 떠있으면
+        if (FloatValue > 0)
+        {
+            CircleCollider2D.isTrigger = true;
+            SortingOrder = Constants.FloatTokenLayerNum;
+            return;
+        }
+
+        if (State == Constants.TOKEN_COIN_INPUT)
+        {
+            CircleCollider2D.isTrigger = true;
+            SortingOrder = Constants.FloatTokenLayerNum;
             return;
         }
         
+        
         //아래 토큰이 없고 빈공간에 있으면
         CircleCollider2D.isTrigger = false;
-        SpriteRenderer.sortingOrder = Constants.StartTokenLayerNum;
+        SortingOrder = Constants.StartTokenLayerNum;
+        
 
     }
    
@@ -217,36 +322,39 @@ public class TokenController : BaseController
     }
 
     #endregion
-    
-    
-    // public virtual void onUsed()
-    // {
-    //     
-    //     Util.RemoveTokenDic(this);
-    //
-    //     if (InBlankToken.onTokenStack != null)
-    //     {
-    //         InBlankToken.productToken.RemoveToken(this);
-    //     }
-    //     
-    //     gameObject.SetActive(false);
-    //         
-    // }
 
-    public virtual void PrintDebug()
+    #region 애니메이션 부분
+
+    public virtual void IntoTokenInput()
     {
-        /** 위 토큰의 아래토큰과 현재토큰이 다를때 */
-        if (OnThisToken.IsValid() && OnThisToken.UnderThisToken.IsValid() && OnThisToken.UnderThisToken.tokenOrder != this.tokenOrder)
-        {
-            Debug.LogError("##### 위 토큰의 아래토큰("+OnThisToken.UnderThisToken.tokenOrder+")과 현재토큰("+tokenOrder+")이 다릅니다.");
-        }
-        
-        /** 아래 토큰의 위토큰과 현재토큰이 다를때 */
-        if (UnderThisToken.IsValid() && UnderThisToken.OnThisToken.tokenOrder != this.tokenOrder)
-        {
-            Debug.LogError("##### 아래 토큰의 위 토큰("+UnderThisToken.OnThisToken.tokenOrder+")과 현재("+tokenOrder+")이 다릅니다.");
-        }
-        
-        
+        Position = new Vector3(4.75f, -3.9f, 0);
+        FloatValue = 0;
+        SpriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+        CircleCollider2D.enabled = false;
+        ShadowObject.SetActive(false);
+
+        transform.DOMove(new Vector3(0f, 1f, 0), 0.5f)
+            .SetRelative(true)
+            .SetEase(Ease.InExpo)
+            .OnComplete(() => clear());
     }
+
+    public virtual void DropToken()
+    {
+        DOTween.To(() => FloatValue, x => FloatValue = x, 0, 0.5f)
+            .SetEase(Ease.InExpo)
+            .SetId("DropCoin")
+            .OnComplete(() => DropAnimation());
+    }
+
+    public virtual void DropAnimation()
+    {
+        GameObject go = Managers.Resource.Instantiate("TokenDropEffect", pooling: true);
+        go.transform.position = transform.position;
+        
+        transform.DOShakePosition(0.3f ,new Vector3(0.15f,0.15f,0),20);
+        transform.DOShakeRotation(0.3f,new Vector3(30f,30f,0),10);
+    }
+
+    #endregion
 }

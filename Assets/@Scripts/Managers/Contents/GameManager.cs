@@ -59,6 +59,12 @@ public class GameManager
 
     #endregion
     
+    #region CoinInput
+    
+    public CoinInputController CoinInput { get; set; }
+    
+    #endregion
+    
     #region Save&Load
     string _path;
     public void SaveGame()

@@ -108,16 +108,16 @@ public static class Util
             if (mtc.IsValid())
             {
                 // 생산토큰이 없어야함
-                if (!mtc.OnProductToken.IsValid())
-                {
-                    Vector3 targetPos = target.transform.position;
-                    float curDiff = Vector3.Distance(pos, targetPos);
-                    if (curDiff < dist)
-                    {
-                        dist = curDiff;
-                        result = mtc;
-                    }        
-                }
+                // if (!mtc.OnProductToken.IsValid())
+                // {
+                //     Vector3 targetPos = target.transform.position;
+                //     float curDiff = Vector3.Distance(pos, targetPos);
+                //     if (curDiff < dist)
+                //     {
+                //         dist = curDiff;
+                //         result = mtc;
+                //     }        
+                // }
             }
         }
         return result;
@@ -218,6 +218,12 @@ public static class Util
         return copyQueue;
     }
     
+    //Enum값중 랜덤값 반환
+    public static float GetRandomFloatValue(float startValue, float endValue)
+    {
+        return UnityEngine.Random.Range(startValue, endValue);
+    }
+    
     
 
     // public static Stack<TokenController> SettingTokenStack(Stack<TokenController> tokenStack, bool isMoveTokenStack = false, TokenController deleteToken = null)
@@ -288,16 +294,16 @@ public static class Util
 
         if (exceptValue >= Constants.ExceptFactoryTokenContoller)
             exceptValue -= Constants.ExceptFactoryTokenContoller;
-        else
-        if (gameObject.GetComponent<FactoryTokenController>())
-            return gameObject.GetComponent<FactoryTokenController>();
-        
-        if (exceptValue >= Constants.ExceptNatureTokencontroller)
-            exceptValue -= Constants.ExceptNatureTokencontroller;
-        else
-        if (gameObject.GetComponent<NatureTokenController>())
-            return gameObject.GetComponent<NatureTokenController>();
-        
+        // else
+        // if (gameObject.GetComponent<FactoryTokenController>())
+        //     return gameObject.GetComponent<FactoryTokenController>();
+        //
+        // if (exceptValue >= Constants.ExceptNatureTokencontroller)
+        //     exceptValue -= Constants.ExceptNatureTokencontroller;
+        // else
+        // if (gameObject.GetComponent<NatureTokenController>())
+        //     return gameObject.GetComponent<NatureTokenController>();
+        //
         // if (exceptValue >= Constants.ExceptBlankTokenContoller)
         //     exceptValue -= Constants.ExceptBlankTokenContoller;
         // else

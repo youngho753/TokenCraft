@@ -2,21 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 
 public class MaterialTokenController : TokenController
 {
-    public ProductTokenController _onProductToken;
+    public ProductController _onProductToken;
     public int _onProductOrder;
-
+    public Text textObject;
+    public AnimationCurve curve;
+    public float curveHeight = 1f;
     
-    void Awake()
-    {
-        Init();
-    }
     public override bool Init()
     {
         base.Init();
+
+        // this.DoFlip();
 
         ObjectType = Define.ObjectType.MaterialToken;
         TokenType = Define.TokenType.MaterialToken;
@@ -27,9 +28,9 @@ public class MaterialTokenController : TokenController
     }
     
     // Update is called once per frame
-    public override void Update()
+    public override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
     }
     
     
@@ -40,10 +41,10 @@ public class MaterialTokenController : TokenController
         get { return base.IsMouseClicked;}
         set
         {
-            //클릭할때는 생산토큰은 항상 Null
-            if(value && OnProductToken.IsValid()){
-                OnProductToken = null;
-            }
+            // //클릭할때는 생산토큰은 항상 Null
+            // if(value && OnProductToken.IsValid()){
+            //     OnProductToken = null;
+            // }
             
             base.IsMouseClicked = value;
             
@@ -55,54 +56,53 @@ public class MaterialTokenController : TokenController
     
     #region TokenDataSetting부분(OnThisToken,UnderThisToken,OnProductToken,SetTokenData)
 
-    public virtual ProductTokenController OnProductToken
-    {
-        get => _onProductToken;
-        set
-        {
-            if (_onProductToken == value) return;
-            
-            //빈 토큰
-            if (!value.IsValid())
-            {
-                if (OnProductToken.IsValid())
-                {
-                    OnProductToken.BlankZoneList[_onProductOrder].onToken = false;
-                    OnProductToken.ProductOnTokenDic.Remove(_onProductOrder);
-                }
-                _onProductToken = null;
-                return;
-            } 
-            
-            _onProductToken = value;
-            _onProductOrder = _onProductToken.inBlankZoneOrder;
-            
-            OnProductToken.ProductOnTokenDic[_onProductOrder] = this;
-            OnProductToken.BlankZoneList[_onProductOrder].onToken = true;
-            return;
-
-        }
-    }
+    // public virtual ProductController OnProductToken
+    // {
+    //     get => _onProductToken;
+    //     set
+    //     {
+    //         if (_onProductToken == value) return;
+    //         
+    //         //빈 토큰
+    //         if (!value.IsValid())
+    //         {
+    //             if (OnProductToken.IsValid())
+    //             {
+    //                 OnProductToken.BlankZoneList[_onProductOrder].onToken = false;
+    //                 OnProductToken.ProductOnTokenDic.Remove(_onProductOrder);
+    //             }
+    //             _onProductToken = null;
+    //             return;
+    //         } 
+    //         
+    //         _onProductToken = value;
+    //
+    //         OnProductToken.ProductOnTokenDic[_onProductOrder] = this;
+    //         OnProductToken.BlankZoneList[_onProductOrder].onToken = true;
+    //         return;
+    //
+    //     }
+    // }
     
     protected override void SetTokenData()
     {
-        //마우스 클릭중이면 
-        if (IsMouseClicked)
-        {
-            CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum;
-            return;
-        }
+        // //마우스 클릭중이면 
+        // if (IsMouseClicked)
+        // {
+        //     CircleCollider2D.isTrigger = true;
+        //     SpriteRenderer.sortingOrder = Constants.StartMouseTokenLayerNum;
+        //     return;
+        // }
 
         
-        //생산토큰 위면
-        if (OnProductToken.IsValid())
-        {
-            CircleCollider2D.isTrigger = true;
-            SpriteRenderer.sortingOrder = OnProductToken.SpriteRenderer.sortingOrder + 1;
-            Position = OnProductToken.BlankZoneList[_onProductOrder].transform.position;
-            return;
-        }
+        // //생산토큰 위면
+        // if (OnProductToken.IsValid())
+        // {
+        //     CircleCollider2D.isTrigger = true;
+        //     SpriteRenderer.sortingOrder = OnProductToken.SpriteRenderer.sortingOrder + 1;
+        //     Position = OnProductToken.BlankZoneList[_onProductOrder].transform.position;
+        //     return;
+        // }
         
         base.SetTokenData();
         
@@ -112,7 +112,7 @@ public class MaterialTokenController : TokenController
     {
         UnderThisToken = null;
         OnThisToken = null;
-        OnProductToken = null;
+        // OnProductToken = null;
         
         Managers.Object.Despawn(this);
     }

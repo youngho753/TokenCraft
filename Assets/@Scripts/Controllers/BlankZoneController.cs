@@ -5,7 +5,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BlankZoneController : BaseController
 {
-    public ProductTokenController InProductToken;
+    public ProductController InProductToken;
     
     public bool onToken;
     
@@ -30,7 +30,7 @@ public class BlankZoneController : BaseController
         if (materialToken.IsValid() == false)
             return;
 
-        InProductToken.OnBlankZoneEnter(order);
+        // InProductToken.OnBlankZoneEnter(order);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -42,6 +42,6 @@ public class BlankZoneController : BaseController
         if (materialToken.IsValid() == false)
             return;
 
-        InProductToken.OnBlankZoneExit(order);
+        // InProductToken.OnBlankZoneExit(order);
     }
 }
